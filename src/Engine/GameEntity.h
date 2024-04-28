@@ -89,9 +89,11 @@ public:
 
     float getX();
     float getY();
+    float getRotation();
 
     void setX(float x);
     void setY(float y);
+    void setRotation(float angle);
 
     GameEntityProperties& getDynamicProps();
 

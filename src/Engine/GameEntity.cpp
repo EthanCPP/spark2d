@@ -46,6 +46,11 @@ float GameEntity::getY()
     return transform.position.y;
 }
 
+float GameEntity::getRotation()
+{
+    return transform.rotation.angle;
+}
+
 void GameEntity::setX(float x)
 {
     transform.position.x = x;
@@ -54,6 +59,11 @@ void GameEntity::setX(float x)
 void GameEntity::setY(float y)
 {
     transform.position.y = y;
+}
+
+void GameEntity::setRotation(float angle)
+{
+    transform.rotation.angle = angle;
 }
 
 GameEntityProperties& GameEntity::getDynamicProps()

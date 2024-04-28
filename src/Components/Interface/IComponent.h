@@ -21,12 +21,20 @@ public:
         return mLocalTransform.position.y;
     }
 
+    virtual float getRotation() {
+        return mLocalTransform.rotation.angle;
+    }
+
     virtual void setX(float x) {
         mLocalTransform.position.x = x;
     }
 
     virtual void setY(float y) {
         mLocalTransform.position.y = y;
+    }
+
+    virtual void setRotation(float angle) {
+        mLocalTransform.rotation.angle = angle;
     }
 
 protected:

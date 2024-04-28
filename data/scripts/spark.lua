@@ -42,6 +42,7 @@ bob:addScript("bob.lua")
 scene:start()
 
 bobSprite.x = 50
+bobSprite.rotation = 12
 
 
 
@@ -103,5 +104,13 @@ function spark:keypressed(code)
         end)
         c()
 
+    end
+
+    if (code == spark.keyboard.code.r) then
+        bob:getSpriteComponent("body").rotation = bob:getSpriteComponent("body").rotation + 10
+    end
+
+    if (code == spark.keyboard.code.g) then
+        bob.rotation = bob.rotation+ 10
     end
 end

@@ -23,4 +23,7 @@ public:
 private:
     sf::Texture mTexture;
     sf::Sprite mSprite;
+
+    sf::CircleShape debugPoint;
+
 };

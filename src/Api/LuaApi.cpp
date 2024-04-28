@@ -136,6 +136,7 @@ void LuaApi::setupEntity()
         ),
         "x", sol::property(&GameEntity::getX, &GameEntity::setX),
         "y", sol::property(&GameEntity::getY, &GameEntity::setY),
+        "rotation", sol::property(&GameEntity::getRotation, &GameEntity::setRotation),
         "props", sol::property(&GameEntity::getDynamicProps)
     );
 
@@ -202,7 +203,8 @@ void LuaApi::setupSpriteComponent()
             }
         ),
         "x", sol::property(&SpriteComponent::getX, &SpriteComponent::setX),
-        "y", sol::property(&SpriteComponent::getY, &SpriteComponent::setY)
+        "y", sol::property(&SpriteComponent::getY, &SpriteComponent::setY),
+        "rotation", sol::property(&SpriteComponent::getRotation, &SpriteComponent::setRotation)
     );
 
 }
