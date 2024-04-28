@@ -32,10 +32,10 @@ end
 -- bob.props.health = 100
 
 -- Create a new sprite component called "body"
-local bobSprite = SpriteComponent.new("body", "images/bob.png")
+-- local bobSprite = SpriteComponent.new("body", "images/bob.png")
 
 -- Add the sprite component to our "bob" entity
-bob:addSpriteComponent(bobSprite)
+local bobSprite = bob:addSpriteComponent("body", "images/bob.png")
 bob:addScript("bob.lua")
 
 -- Finally start the scene

@@ -37,9 +37,11 @@ function spark:update()
     end
 end
 
-function spark:keypressed()
--- print("want some props")
--- print(entity.props.armour)
+function spark:keypressed(code)
+    if (code == spark.keyboard.code.enter) then
+        print("move bob")
+        entity:getSpriteComponent("body").x = entity:getSpriteComponent("body").x + 20
+    end
 end
 
 -- function dump(o)

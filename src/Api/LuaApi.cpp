@@ -147,20 +147,23 @@ void LuaApi::setupEntity()
     */
 
     // -- entity:addSpriteComponent(sprite)
-    lua["Entity"]["addSpriteComponent"] = [this](GameEntity& entity, SpriteComponent& spriteComponent)
+    lua["Entity"]["addSpriteComponent"] = [this](GameEntity& entity, std::string key, std::string filepath)
     {
-        mSceneManager->getScene(entity.sceneKey)->entityManager->getEntity(entity.key)->addSpriteComponent(std::make_shared<SpriteComponent>(spriteComponent));
+        std::shared_ptr<SpriteComponent> spriteComponent = std::make_shared<SpriteComponent>(key, filepath);
+        mSceneManager->getScene(entity.sceneKey)->entityManager->getEntity(entity.key)->addSpriteComponent(spriteComponent);
+
+        return spriteComponent;
     };
 
     // -- entity:getSpriteComponent(key)
     lua["Entity"]["getSpriteComponent"] = [this](GameEntity& entity, std::string key)
     {
-        entity.getComponent("body")->setX(100);
-
         // todo is all this really necessary?
-        std::shared_ptr<IComponent> component = mSceneManager->getScene(entity.sceneKey)->entityManager->getEntity(entity.key)->getComponent(key);
+        /*std::shared_ptr<IComponent> component = mSceneManager->getScene(entity.sceneKey)->entityManager->getEntity(entity.key)->getComponent(key);
         std::shared_ptr<SpriteComponent> spriteComponent = std::dynamic_pointer_cast<SpriteComponent>(component);
-        return spriteComponent;
+        return spriteComponent;*/
+
+        return std::dynamic_pointer_cast<SpriteComponent>(entity.getComponent(key));
     };
 
     lua["Entity"]["addScript"] = [this](GameEntity& entity, std::string path)
@@ -185,10 +188,10 @@ void LuaApi::setupSpriteComponent()
     /*
     * =========================================
     * Create a new sprite component object with desired texture
+    * 
+    * DON'T CREATE SPRITECOMPONENT THIS WAY. USE (Entity):addSpriteComponent(key, path)
     * =========================================
     */
-
-    // -- local sprite = SpriteComponent.new("key", "path")
     lua.new_usertype<SpriteComponent>("SpriteComponent",
         sol::meta_function::construct,
         sol::factories(
