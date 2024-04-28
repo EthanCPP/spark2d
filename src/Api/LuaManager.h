@@ -19,6 +19,10 @@ public:
 	void update(float dt);
 	void keyDown(sf::Keyboard::Scancode code);
 	void keyUp(sf::Keyboard::Scancode code);
+	void mouseDown(sf::Mouse::Button button);
+	void mouseUp(sf::Mouse::Button button);
+	void mouseWheelMoved(int direction);
+	void mouseMoved(float x, float y);
 
 private:
 	std::shared_ptr<SceneManager> mSceneManager;

@@ -45,6 +45,10 @@ public:
 	void update(std::vector<sf::Keyboard::Scancode> keysDown, float dt);
 	void keyDown(sf::Keyboard::Scancode code);
 	void keyUp(sf::Keyboard::Scancode code);
+	void mouseDown(sf::Mouse::Button button);
+	void mouseUp(sf::Mouse::Button button);
+	void mouseWheelMoved(int direction);
+	void mouseMoved(float x, float y);
 
 	LuaApiMessage getMessage();
 	std::vector<LuaApiPushState> getPushStates();
@@ -57,6 +61,8 @@ private:
 
 	std::shared_ptr<SparkGlobals> mGlobals;
 
+	float mMouseX, mMouseY;
+
 	float mDt;
 private:
 	// Lua functions that call into C++
@@ -64,6 +70,7 @@ private:
 	void setupEntity();
 	void setupSpriteComponent();
 	void setupKeyboard();
+	void setupMouse();
 	void setupUtils();
 	void setupTime();
 

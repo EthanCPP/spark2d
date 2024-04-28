@@ -23,6 +23,7 @@ void LuaApi::setup()
     setupEntity();
     setupSpriteComponent();
     setupKeyboard();
+    setupMouse();
     setupUtils();
     setupTime();
 
@@ -253,6 +254,32 @@ void LuaApi::keyUp(sf::Keyboard::Scancode code)
     lua["spark"]["keyreleased"](sol::nil, code);
 }
 
+void LuaApi::mouseDown(sf::Mouse::Button button)
+{
+    lua["spark"]["mousedown"](sol::nil, button);
+}
+
+void LuaApi::mouseUp(sf::Mouse::Button button)
+{
+    lua["spark"]["mouseup"](sol::nil, button);
+}
+
+void LuaApi::mouseWheelMoved(int direction)
+{
+    lua["spark"]["mousewheelmoved"](sol::nil, direction);
+}
+
+void LuaApi::mouseMoved(float x, float y)
+{
+    mMouseX = x;
+    mMouseY = y;
+
+    lua["spark"]["mousemoved"](sol::nil, x, y);
+
+    lua["spark"]["mouse"]["x"] = mMouseX;
+    lua["spark"]["mouse"]["y"] = mMouseY;
+}
+
 void LuaApi::setupKeyboard()
 {
     /*
@@ -401,6 +428,41 @@ void LuaApi::setupKeyboard()
     lua["spark"]["keyboard"]["down"] = [this](sol::table keyboard, int code) {
         return (std::find(mKeysDown.begin(), mKeysDown.end(), code) != mKeysDown.end());
     };
+}
+
+void LuaApi::setupMouse()
+{
+    /*
+    * =========================================
+    * Instantiate the mouse table of utilities
+    * =========================================
+    */
+    lua["spark"]["mouse"] = lua.create_table_with(
+        "x", 0,
+        "y", 0
+    );
+
+
+    /*
+    * =========================================
+    * Mouse code bindings
+    * TODO put this somewhere nicer
+    * =========================================
+    */
+
+    // -- spark.mouse.button.left 
+    lua["spark"]["mouse"]["button"] = lua.create_table_with(
+        "left", 0,
+        "right", 1,
+        "middle", 2,
+        "x1", 3,
+        "x2", 4
+    );
+
+    lua["spark"]["mouse"]["wheel"] = lua.create_table_with(
+        "up", 1,
+        "down", -1
+    );
 }
 
 LuaApiMessage LuaApi::getMessage()

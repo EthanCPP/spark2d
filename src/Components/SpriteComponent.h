@@ -24,6 +24,5 @@ private:
     sf::Texture mTexture;
     sf::Sprite mSprite;
 
-    sf::CircleShape debugPoint;
-
+    sf::Transform mFinalTransform;
 };

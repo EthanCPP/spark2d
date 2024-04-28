@@ -41,6 +41,18 @@ int main()
 
             if (event.type == sf::Event::KeyReleased)
                 luaManager->keyUp(event.key.scancode);
+
+            if (event.type == sf::Event::MouseButtonPressed)
+                luaManager->mouseDown(event.mouseButton.button);
+
+            if (event.type == sf::Event::MouseButtonReleased)
+                luaManager->mouseUp(event.mouseButton.button);
+
+            if (event.type == sf::Event::MouseWheelScrolled)
+                luaManager->mouseWheelMoved(event.mouseWheelScroll.delta);
+
+            if (event.type == sf::Event::MouseMoved)
+                luaManager->mouseMoved(event.mouseMove.x, event.mouseMove.y);
         }
 
         luaManager->update(dt);

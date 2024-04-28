@@ -100,3 +100,35 @@ void LuaManager::keyUp(sf::Keyboard::Scancode code)
 		}
 	}
 }
+
+void LuaManager::mouseDown(sf::Mouse::Button button)
+{
+	for (auto luaState : mLuaStates)
+	{
+		luaState->mouseDown(button);
+	}
+}
+
+void LuaManager::mouseUp(sf::Mouse::Button button)
+{
+	for (auto luaState : mLuaStates)
+	{
+		luaState->mouseUp(button);
+	}
+}
+
+void LuaManager::mouseWheelMoved(int direction)
+{
+	for (auto luaState : mLuaStates)
+	{
+		luaState->mouseWheelMoved(direction);
+	}
+}
+
+void LuaManager::mouseMoved(float x, float y)
+{
+	for (auto luaState : mLuaStates)
+	{
+		luaState->mouseMoved(x, y);
+	}
+}

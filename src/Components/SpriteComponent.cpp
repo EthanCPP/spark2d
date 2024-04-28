@@ -2,7 +2,6 @@
 
 
 SpriteComponent::SpriteComponent(std::string key, std::string filepath)
-    : debugPoint(2)
 {
     this->key = key;
 
@@ -16,7 +15,6 @@ SpriteComponent::SpriteComponent(std::string key, std::string filepath)
     }
 
     mSprite.setOrigin(mSprite.getTextureRect().width / 2, mSprite.getTextureRect().height / 2);
-    debugPoint.setFillColor(sf::Color(255, 0, 0));
 }
 
 SpriteComponent::~SpriteComponent()
@@ -25,21 +23,19 @@ SpriteComponent::~SpriteComponent()
 
 void SpriteComponent::update(Transform& globalTransform)
 {
-    mSprite.setPosition(sf::Vector2f(
-        globalTransform.position.x + mLocalTransform.position.x,
-        globalTransform.position.y + mLocalTransform.position.y
-    ));
+    sf::Transform parentTransform;
+    parentTransform.translate(globalTransform.position.x, globalTransform.position.y);
+    parentTransform.rotate(globalTransform.rotation.angle);
 
-    mSprite.setRotation(globalTransform.rotation.angle + mLocalTransform.rotation.angle);
+    sf::Transform childTransform;
+    childTransform.translate(mLocalTransform.position.x, mLocalTransform.position.y);
+    childTransform.rotate(mLocalTransform.rotation.angle);
 
-
-    debugPoint.setPosition(globalTransform.position.x, globalTransform.position.y);
+    mFinalTransform = parentTransform * childTransform;
 }
 
 void SpriteComponent::render(std::shared_ptr<sf::RenderWindow> window)
 {
-    window->draw(mSprite);
-
-    window->draw(debugPoint);
+    window->draw(mSprite, mFinalTransform);
 
 }
