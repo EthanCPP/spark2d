@@ -1,0 +1,1 @@
+g++ -g $(find ./src -type f -iregex ".*\.cpp") -lsfml-graphics -lsfml-window -lsfml-system -o spark2d

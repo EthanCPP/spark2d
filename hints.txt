@@ -1,0 +1,5 @@
+We can call getComponent on a GameEntity, however it will return the IComponent
+So we can cast it to the type of component we want with, for example:
+
+std::shared_ptr<IComponent> component = entity.getComponent("body");
+std::shared_ptr<ISpriteComponent> spriteComponent = std::dynamic_pointer_cast<ISpriteComponent>(component);
