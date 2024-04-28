@@ -1,9 +1,10 @@
 #include "LuaManager.h"
 
-LuaManager::LuaManager(std::shared_ptr<SceneManager> sceneManager, std::shared_ptr<sf::RenderWindow> window)
+LuaManager::LuaManager(std::shared_ptr<SceneManager> sceneManager, std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<SparkGlobals> globals)
 {
 	mSceneManager = sceneManager;
 	mWindow = window;
+	mGlobals = globals;
 }
 
 LuaManager::~LuaManager()
@@ -12,7 +13,7 @@ LuaManager::~LuaManager()
 
 bool LuaManager::addLuaState(std::string file)
 {
-	std::shared_ptr<LuaApi> luaState = std::make_shared<LuaApi>(mSceneManager, mWindow);
+	std::shared_ptr<LuaApi> luaState = std::make_shared<LuaApi>(mSceneManager, mWindow, mGlobals);
 	luaState->setup();
 
 	if (!luaState->init(file))
@@ -28,7 +29,7 @@ bool LuaManager::addLuaState(std::string file)
 
 bool LuaManager::addLuaState(std::string file, std::shared_ptr<GameEntity> entity)
 {
-	std::shared_ptr<LuaApi> luaState = std::make_shared<LuaApi>(mSceneManager, mWindow);
+	std::shared_ptr<LuaApi> luaState = std::make_shared<LuaApi>(mSceneManager, mWindow, mGlobals);
 	luaState->setup(entity);
 
 	if (!luaState->init(file))
@@ -42,12 +43,14 @@ bool LuaManager::addLuaState(std::string file, std::shared_ptr<GameEntity> entit
 	return true;
 }
 
-void LuaManager::update()
+void LuaManager::update(float dt)
 {
+	mDt = dt;
+
 	// the size of the vector can change through the iteration
 	for (std::size_t i = 0; i != mLuaStates.size(); ++i)
 	{
-		mLuaStates[i]->update(mKeysDown);
+		mLuaStates[i]->update(mKeysDown, mDt);
 
 		LuaApiMessage message = mLuaStates[i]->getMessage();
 

@@ -1,9 +1,10 @@
 #include "LuaApi.h"
 
-LuaApi::LuaApi(std::shared_ptr<SceneManager> sceneManager, std::shared_ptr<sf::RenderWindow> window)
+LuaApi::LuaApi(std::shared_ptr<SceneManager> sceneManager, std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<SparkGlobals> globals)
 {
     mSceneManager = sceneManager;
     mWindow = window;
+    mGlobals = globals;
 
     lua.open_libraries(sol::lib::base, sol::lib::io, sol::lib::math, sol::lib::table, sol::lib::coroutine);
 }
@@ -148,7 +149,18 @@ void LuaApi::setupEntity()
     // -- entity:addSpriteComponent(sprite)
     lua["Entity"]["addSpriteComponent"] = [this](GameEntity& entity, SpriteComponent& spriteComponent)
     {
-        entity.addSpriteComponent(std::make_shared<SpriteComponent>(spriteComponent));
+        mSceneManager->getScene(entity.sceneKey)->entityManager->getEntity(entity.key)->addSpriteComponent(std::make_shared<SpriteComponent>(spriteComponent));
+    };
+
+    // -- entity:getSpriteComponent(key)
+    lua["Entity"]["getSpriteComponent"] = [this](GameEntity& entity, std::string key)
+    {
+        entity.getComponent("body")->setX(100);
+
+        // todo is all this really necessary?
+        std::shared_ptr<IComponent> component = mSceneManager->getScene(entity.sceneKey)->entityManager->getEntity(entity.key)->getComponent(key);
+        std::shared_ptr<SpriteComponent> spriteComponent = std::dynamic_pointer_cast<SpriteComponent>(component);
+        return spriteComponent;
     };
 
     lua["Entity"]["addScript"] = [this](GameEntity& entity, std::string path)
@@ -185,7 +197,9 @@ void LuaApi::setupSpriteComponent()
 
                 return spriteComponent;
             }
-        )
+        ),
+        "x", sol::property(&SpriteComponent::getX, &SpriteComponent::setX),
+        "y", sol::property(&SpriteComponent::getY, &SpriteComponent::setY)
     );
 
 }
@@ -194,10 +208,12 @@ void LuaApi::setupSandbox()
 {
 }
 
-void LuaApi::update(std::vector<sf::Keyboard::Scancode> keysDown)
+void LuaApi::update(std::vector<sf::Keyboard::Scancode> keysDown, float dt)
 {
     mKeysDown = keysDown;
+    mDt = dt;
 
+    lua["spark"]["time"]["delta"] = mDt;
     lua["spark"]["update"]();
 
     /*
@@ -406,15 +422,30 @@ void LuaApi::setupUtils()
     * =========================================
     */
 
-    // -- spark:setWindowProperties(title, width, height)
-    lua["spark"]["setWindowProperties"] = [this](sol::table spark, std::string title, float width, float height) {
-        mWindow->create(sf::VideoMode((unsigned int) width, (unsigned int) height), title);
+    lua["spark"]["setWindowSize"] = [this](sol::table spark, float width, float height) {
+        mGlobals->windowWidth = width;
+        mGlobals->windowHeight = height;
+    };
+
+    lua["spark"]["setWindowTitle"] = [this](sol::table spark, std::string title) {
+        mGlobals->windowTitle = title;
+    };
+
+    lua["spark"]["setFramerateLimit"] = [this](sol::table spark, int framerate) {
+        mGlobals->framerateLimit = framerate;
+    };
+
+    lua["spark"]["regenerateWindow"] = [this](sol::table spark) {
+        mWindow->create(sf::VideoMode(mGlobals->windowWidth, mGlobals->windowHeight), mGlobals->windowTitle);
+        mWindow->setFramerateLimit(mGlobals->framerateLimit);
     };
 }
 
 void LuaApi::setupTime()
 {
-    lua["spark"]["time"] = lua.create_table();
+    lua["spark"]["time"] = lua.create_table_with(
+        "delta", 0.01f
+    );
 
     lua["spark"]["time"]["wait"] = sol::yielding([this](sol::table time, sol::function f, float seconds) {
         LuaApiWaiter waiter;

@@ -1,5 +1,6 @@
 #pragma once
 #include "../Engine/SceneManager.h"
+#include "../Engine/SparkGlobals.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -34,14 +35,14 @@ struct LuaApiWaiter
 class LuaApi
 {
 public:
-	LuaApi(std::shared_ptr<SceneManager> sceneManager, std::shared_ptr<sf::RenderWindow> window);
+	LuaApi(std::shared_ptr<SceneManager> sceneManager, std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<SparkGlobals> globals);
 	~LuaApi();
 
 	void setup();
 	void setup(std::shared_ptr<GameEntity> entity);
 	bool init(std::string script);
 
-	void update(std::vector<sf::Keyboard::Scancode> keysDown);
+	void update(std::vector<sf::Keyboard::Scancode> keysDown, float dt);
 	void keyDown(sf::Keyboard::Scancode code);
 	void keyUp(sf::Keyboard::Scancode code);
 
@@ -54,6 +55,9 @@ private:
 	std::shared_ptr<SceneManager> mSceneManager;
 	std::shared_ptr<GameEntity> mEntity;
 
+	std::shared_ptr<SparkGlobals> mGlobals;
+
+	float mDt;
 private:
 	// Lua functions that call into C++
 	void setupScene();

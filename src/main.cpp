@@ -5,14 +5,17 @@
 #include <SFML/Graphics.hpp>
 
 #include <memory>
-
+#include "Engine/SparkGlobals.h"
 
 int main()
 {
-    std::shared_ptr<sf::RenderWindow> window = std::make_shared<sf::RenderWindow>(sf::VideoMode(640, 480), "A cool spark game");
+    std::shared_ptr<SparkGlobals> sparkGlobals = std::make_shared<SparkGlobals>();
+
+    std::shared_ptr<sf::RenderWindow> window = std::make_shared<sf::RenderWindow>(sf::VideoMode(sparkGlobals->windowWidth, sparkGlobals->windowHeight), sparkGlobals->windowTitle);
+    window->setFramerateLimit(sparkGlobals->framerateLimit);
 
     std::shared_ptr<SceneManager> sceneManager = std::make_shared<SceneManager>();
-    std::shared_ptr<LuaManager> luaManager = std::make_shared<LuaManager>(sceneManager, window);
+    std::shared_ptr<LuaManager> luaManager = std::make_shared<LuaManager>(sceneManager, window, sparkGlobals);
 
     if (!luaManager->addLuaState("data/scripts/spark.lua"))
     {
@@ -20,8 +23,13 @@ int main()
         return 0;
     }
 
+    sf::Clock dtClock;
+    float dt;
+
     while (window->isOpen())
     {
+        dt =  dtClock.restart().asSeconds();
+
         sf::Event event;
         while (window->pollEvent(event))
         {
@@ -35,7 +43,7 @@ int main()
                 luaManager->keyUp(event.key.scancode);
         }
 
-        luaManager->update();
+        luaManager->update(dt);
         sceneManager->update();
 
         window->clear();

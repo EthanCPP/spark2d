@@ -21,19 +21,19 @@ entity.props.pack = 69
 
 function spark:update()
     if spark.keyboard:down(spark.keyboard.code.w) then
-        entity.y = entity.y - 0.1
+        entity.y = entity.y - (300 * spark.time.delta)
     end
     
     if spark.keyboard:down(spark.keyboard.code.s) then
-        entity.y = entity.y + 0.1
+        entity.y = entity.y + (300 * spark.time.delta)
     end
     
     if spark.keyboard:down(spark.keyboard.code.a) then
-        entity.x = entity.x - 0.1
+        entity.x = entity.x - (300 * spark.time.delta)
     end
     
     if spark.keyboard:down(spark.keyboard.code.d) then
-        entity.x = entity.x + 0.1
+        entity.x = entity.x + (300 * spark.time.delta)
     end
 end
 
