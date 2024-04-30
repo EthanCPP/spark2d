@@ -1,8 +1,8 @@
 #include "SceneManager.h"
 
-SceneManager::SceneManager()
+SceneManager::SceneManager(ResourceManager* resourceManager)
 {
-
+	mResourceManager = resourceManager;
 }
 
 SceneManager::~SceneManager()
@@ -12,6 +12,7 @@ SceneManager::~SceneManager()
 
 void SceneManager::addScene(std::string key, std::shared_ptr<Scene> scene)
 {
+	scene->init(mResourceManager);
 	mScenes.insert({ key, scene });
 }
 

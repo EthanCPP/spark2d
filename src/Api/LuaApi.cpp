@@ -151,8 +151,9 @@ void LuaApi::setupEntity()
     // -- entity:addSpriteComponent(sprite)
     lua["Entity"]["addSpriteComponent"] = [this](GameEntity& entity, std::string key, std::string filepath)
     {
-        std::shared_ptr<SpriteComponent> spriteComponent = std::make_shared<SpriteComponent>(key, filepath);
+        std::shared_ptr<SpriteComponent> spriteComponent = std::make_shared<SpriteComponent>(key);
         mSceneManager->getScene(entity.sceneKey)->entityManager->getEntity(entity.key)->addSpriteComponent(spriteComponent);
+        spriteComponent->loadTexture(filepath);
 
         return spriteComponent;
     };
@@ -198,7 +199,8 @@ void LuaApi::setupSpriteComponent()
         sol::meta_function::construct,
         sol::factories(
             [this](std::string key, std::string filepath) {
-                std::shared_ptr<SpriteComponent> spriteComponent = std::make_shared<SpriteComponent>(key, filepath);
+                std::cout << "Please use (entity):addSpriteComponent(key, path) instead of SpriteComponent.new()!" << std::endl;
+                std::shared_ptr<SpriteComponent> spriteComponent = std::make_shared<SpriteComponent>(key);
 
                 return spriteComponent;
             }

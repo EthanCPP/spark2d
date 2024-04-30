@@ -1,8 +1,8 @@
 #include "EntityManager.h"
 
-EntityManager::EntityManager()
+EntityManager::EntityManager(ResourceManager* resourceManager)
 {
-
+    mResourceManager = resourceManager;
 }
 
 EntityManager::~EntityManager()
@@ -12,6 +12,7 @@ EntityManager::~EntityManager()
 
 void EntityManager::addEntity(std::string key, std::shared_ptr<GameEntity> entity)
 {
+    entity->init(mResourceManager);
 	mEntities.insert({ key, entity });
 }
 

@@ -8,8 +8,14 @@ GameEntity::~GameEntity()
 {
 }
 
+void GameEntity::init(ResourceManager* resourceManager)
+{
+    mResourceManager = resourceManager;
+}
+
 void GameEntity::addSpriteComponent(std::shared_ptr<SpriteComponent> spriteComponent)
 {
+    spriteComponent->init(mResourceManager);
     mComponents.insert({ spriteComponent->key, spriteComponent });
 }
 

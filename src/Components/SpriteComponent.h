@@ -2,17 +2,22 @@
 
 #include "Interface/IComponent.h"
 #include "Transform.h"
+#include "../Engine/ResourceManager.h"
 
 #include <SFML/Graphics.hpp>
 
 #include <iostream>
 #include <string>
+#include <memory>
 
 class SpriteComponent : public IComponent
 {
 public:
-    SpriteComponent(std::string key, std::string filepath);
+    SpriteComponent(std::string key);
     ~SpriteComponent();
+
+    void init(ResourceManager* resourceManager);
+    void loadTexture(std::string filepath);
 
     virtual bool isDrawable() { return true; }
 
@@ -21,8 +26,10 @@ public:
 
     std::string key;
 private:
-    sf::Texture mTexture;
+    std::shared_ptr<sf::Texture> mTexture;
     sf::Sprite mSprite;
 
     sf::Transform mFinalTransform;
+
+    ResourceManager* mResourceManager;
 };

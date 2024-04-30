@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Engine\ResourceManager.cpp" />
     <ClCompile Include="src\Api\LuaConfigLoader.cpp" />
     <ClCompile Include="src\Api\LuaManager.cpp" />
     <ClCompile Include="src\Api\LuaApi.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Engine\ResourceManager.h" />
     <ClInclude Include="src\Api\LuaConfigLoader.h" />
     <ClInclude Include="src\Api\LuaManager.h" />
     <ClInclude Include="src\Api\LuaApi.h" />

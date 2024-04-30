@@ -1,24 +1,25 @@
 #include "SpriteComponent.h"
 
 
-SpriteComponent::SpriteComponent(std::string key, std::string filepath)
+SpriteComponent::SpriteComponent(std::string key)
 {
     this->key = key;
-
-    if (!mTexture.loadFromFile("data/" + filepath))
-    {
-        std::cout << "SpriteComponent: Unable to load texture from file: " << filepath << std::endl;
-    }
-    else
-    {
-        mSprite.setTexture(mTexture);
-    }
-
-    mSprite.setOrigin(mSprite.getTextureRect().width / 2, mSprite.getTextureRect().height / 2);
 }
 
 SpriteComponent::~SpriteComponent()
 {
+}
+
+void SpriteComponent::init(ResourceManager* resourceManager)
+{
+    mResourceManager = resourceManager;
+}
+
+void SpriteComponent::loadTexture(std::string filepath)
+{
+    mTexture = mResourceManager->getTexture(filepath);
+    mSprite.setTexture(*mTexture);
+    mSprite.setOrigin(mSprite.getTextureRect().width / 2, mSprite.getTextureRect().height / 2);
 }
 
 void SpriteComponent::update(Transform& globalTransform)

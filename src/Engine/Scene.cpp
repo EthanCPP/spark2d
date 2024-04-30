@@ -3,9 +3,6 @@
 Scene::Scene(std::string key)
 {
 	this->key = key;
-
-	entityManager = std::make_shared<EntityManager>();
-
 	mInitialised = false;
 }
 
@@ -14,16 +11,16 @@ Scene::~Scene()
 
 }
 
-void Scene::init()
+void Scene::init(ResourceManager* resourceManager)
 {
+	entityManager = std::make_shared<EntityManager>(resourceManager);
+
 	mInitialised = true;
 }
 
 void Scene::start()
 {
-	if (!mInitialised) {
-		init();
-	}
+
 }
 
 void Scene::stop()

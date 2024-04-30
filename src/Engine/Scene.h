@@ -1,4 +1,5 @@
 #pragma once
+#include "ResourceManager.h"
 #include "EntityManager.h"
 
 #include <SFML/Graphics.hpp>
@@ -11,6 +12,7 @@ public:
 	Scene(std::string key);
 	~Scene();
 
+	void init(ResourceManager* resourceManager);
 	void start();
 	void stop();
 	void update();
@@ -19,8 +21,6 @@ public:
 	std::shared_ptr<EntityManager> entityManager;
 
 	std::string key;
-protected:
-	void init();
 
 private:
 	bool mInitialised;

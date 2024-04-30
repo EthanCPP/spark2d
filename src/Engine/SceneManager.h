@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene.h"
+#include "ResourceManager.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -10,7 +11,7 @@
 class SceneManager
 {
 public:
-	SceneManager();
+	SceneManager(ResourceManager* resourceManager);
 	~SceneManager();
 
 	void addScene(std::string key, std::shared_ptr<Scene> scene);
@@ -24,5 +25,7 @@ public:
 private:
 	std::string mCurrentScene;
 	std::map<std::string, std::shared_ptr<Scene>> mScenes;
+
+	ResourceManager* mResourceManager;
 };
 

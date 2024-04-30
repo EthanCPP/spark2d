@@ -3,6 +3,7 @@
 #include "../Components/Interface/IComponent.h"
 #include "../Components/SpriteComponent.h"
 #include "../Components/Transform.h"
+#include "ResourceManager.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -80,6 +81,8 @@ public:
     GameEntity();
     ~GameEntity();
 
+    void init(ResourceManager* resourceManager);
+
     void addSpriteComponent(std::shared_ptr<SpriteComponent> spriteComponent);
 
     std::shared_ptr<IComponent> getComponent(std::string key);
@@ -103,6 +106,7 @@ private:
     std::map<std::string, std::shared_ptr<IComponent>> mComponents;
 
     Transform transform;
+    ResourceManager* mResourceManager;
 
     GameEntityProperties mDynamicProps;
 };

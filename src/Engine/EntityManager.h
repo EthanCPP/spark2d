@@ -1,4 +1,5 @@
 #pragma once
+#include "ResourceManager.h"
 #include "GameEntity.h"
 
 #include <SFML/Graphics.hpp>
@@ -10,7 +11,7 @@
 class EntityManager
 {
 public:
-	EntityManager();
+	EntityManager(ResourceManager* resourceManager);
 	~EntityManager();
 
 	void addEntity(std::string key, std::shared_ptr<GameEntity> entity);
@@ -21,6 +22,6 @@ public:
 
 private:
 	std::map<std::string, std::shared_ptr<GameEntity>> mEntities;
-
+	ResourceManager* mResourceManager;
 };
 
