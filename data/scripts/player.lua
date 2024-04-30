@@ -5,6 +5,7 @@ local jamSprite = entity:getSpriteComponent("jam")
 function spark:update()
     -- Entity movement
     if spark.keyboard:down(spark.keyboard.code.w) then
+        print("UP")
         entity.y = entity.y - (300 * spark.time.delta)
     end
     

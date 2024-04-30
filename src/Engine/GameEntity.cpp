@@ -6,11 +6,18 @@ GameEntity::GameEntity()
 
 GameEntity::~GameEntity()
 {
+    // Delete all lua states associated with this entity.
+    mLuaStates.clear();
 }
 
 void GameEntity::init(ResourceManager* resourceManager)
 {
     mResourceManager = resourceManager;
+}
+
+void GameEntity::addLuaState(std::shared_ptr<LuaApi> luaState)
+{
+   mLuaStates.push_back(luaState);
 }
 
 void GameEntity::addSpriteComponent(std::shared_ptr<SpriteComponent> spriteComponent)

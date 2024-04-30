@@ -53,6 +53,10 @@ public:
 	LuaApiMessage getMessage();
 	std::vector<LuaApiPushState> getPushStates();
 
+	std::vector<std::shared_ptr<GameEntity>> entitiesToDestroy;
+
+	bool inactive;
+
 private:
 	sol::state lua;
 

@@ -16,6 +16,9 @@
 #define SOL_ALL_SAFETIES_ON 1
 #include <sol/sol.hpp>
 
+// Forward declaration of LuaApi due to mutual inclusion.
+class LuaApi;
+
 struct GameEntityPropItem
 {
     sol::type type;
@@ -82,6 +85,7 @@ public:
     ~GameEntity();
 
     void init(ResourceManager* resourceManager);
+    void addLuaState(std::shared_ptr<LuaApi> luaState);
 
     void addSpriteComponent(std::shared_ptr<SpriteComponent> spriteComponent);
 
@@ -102,6 +106,8 @@ public:
 
     std::string key;
     std::string sceneKey;
+
+    std::vector<std::shared_ptr<LuaApi>> mLuaStates;
 private:
     std::map<std::string, std::shared_ptr<IComponent>> mComponents;
 

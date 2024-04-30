@@ -15,3 +15,13 @@ local jamSprite = player:addSpriteComponent("jam", "images/jam.png")
 
 -- Finally start the scene
 scene:start()
+
+c = coroutine.wrap(function()
+    for i = 3, 1, -1 do
+        print("Destroying in " .. i)
+        spark.time:wait(c, 1)
+    end
+
+    player:destroy()
+end)
+c()

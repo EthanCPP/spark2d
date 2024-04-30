@@ -21,6 +21,11 @@ std::shared_ptr<GameEntity> EntityManager::getEntity(std::string key)
     return mEntities[key];
 }
 
+void EntityManager::destroyEntity(std::string key)
+{
+    mEntities.erase(key);
+}
+
 void EntityManager::update()
 {
     for (auto const& entity : mEntities)

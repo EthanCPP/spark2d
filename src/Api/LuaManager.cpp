@@ -39,6 +39,7 @@ bool LuaManager::addLuaState(std::string file, std::shared_ptr<GameEntity> entit
 	}
 
 	mLuaStates.push_back(luaState);
+	entity->addLuaState(luaState);
 
 	return true;
 }
@@ -50,6 +51,9 @@ void LuaManager::update(float dt)
 	// the size of the vector can change through the iteration
 	for (std::size_t i = 0; i != mLuaStates.size(); ++i)
 	{
+		if (mLuaStates[i]->inactive)
+			continue;
+
 		mLuaStates[i]->update(mKeysDown, mDt);
 
 		LuaApiMessage message = mLuaStates[i]->getMessage();
@@ -67,6 +71,22 @@ void LuaManager::update(float dt)
 					std::cout << "Unable to parse file " << pushState.file << std::endl;
 				}
 			}
+		}
+
+		if (!mLuaStates[i]->entitiesToDestroy.empty())
+		{
+			for (auto entityToDestroy : mLuaStates[i]->entitiesToDestroy)
+			{
+				// Deactivate all Lua states associated with this entity. These objects will get destroyed when the scene ends.
+				for (auto luaState : entityToDestroy->mLuaStates)
+				{
+					luaState->inactive = true;
+				}
+
+				mSceneManager->getScene(entityToDestroy->sceneKey)->entityManager->destroyEntity(entityToDestroy->key);
+			}
+
+			mLuaStates[i]->entitiesToDestroy.clear();
 		}
 	}
 }

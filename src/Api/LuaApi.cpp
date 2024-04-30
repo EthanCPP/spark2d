@@ -6,6 +6,8 @@ LuaApi::LuaApi(std::shared_ptr<SceneManager> sceneManager, std::shared_ptr<sf::R
     mWindow = window;
     mGlobals = globals;
 
+    this->inactive = false;
+
     lua.open_libraries(sol::lib::base, sol::lib::io, sol::lib::math, sol::lib::table, sol::lib::coroutine);
 }
 
@@ -106,6 +108,10 @@ void LuaApi::setupScene()
     lua["Scene"]["getEntity"] = [this](Scene& scene, std::string key) {
         return scene.entityManager->getEntity(key);
     };
+
+    lua["spark"]["getScene"] = [this](sol::table spark, std::string key) {
+        return mSceneManager->getScene(key);
+    };
 }
 
 void LuaApi::setupEntity()
@@ -183,6 +189,11 @@ void LuaApi::setupEntity()
 
     lua["spark"]["entity"] = [this](sol::table spark) {
         return mEntity;
+    };
+
+    lua["Entity"]["destroy"] = [this](GameEntity& entity)
+    {
+        entitiesToDestroy.push_back(std::make_shared<GameEntity>(entity));
     };
 }
 

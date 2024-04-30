@@ -16,6 +16,7 @@ public:
 
 	void addEntity(std::string key, std::shared_ptr<GameEntity> entity);
 	std::shared_ptr<GameEntity> getEntity(std::string key);
+	void destroyEntity(std::string key);
 
 	void update();
 	void render(std::shared_ptr<sf::RenderWindow> window);
