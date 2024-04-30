@@ -1,8 +1,9 @@
 #include "LuaConfigLoader.h"
 
-LuaConfigLoader::LuaConfigLoader(std::shared_ptr<SparkGlobals> globals)
+LuaConfigLoader::LuaConfigLoader(std::shared_ptr<SparkGlobals> globals, ResourceManager* resourceManager)
 {
 	mGlobals = globals;
+    mResourceManager = resourceManager;
 
     lua.open_libraries(sol::lib::base, sol::lib::io, sol::lib::math, sol::lib::table);
 }
@@ -17,6 +18,7 @@ void LuaConfigLoader::setup()
     lua["spark"] = lua.create_table();
 
     setupWindowSettings();
+    setupFunctions();
 }
 
 bool LuaConfigLoader::init(std::string script)
@@ -54,5 +56,12 @@ void LuaConfigLoader::setupWindowSettings()
 
     lua["spark"]["setFramerateLimit"] = [this](sol::table spark, int framerate) {
         mGlobals->framerateLimit = framerate;
+    };
+}
+
+void LuaConfigLoader::setupFunctions()
+{
+    lua["spark"]["preloadTexture"] = [this](sol::table spark, std::string path) {
+        mResourceManager->getTexture(path);
     };
 }

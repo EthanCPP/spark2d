@@ -1,5 +1,6 @@
 #pragma once
 #include "../Engine/SparkGlobals.h"
+#include "../Engine/ResourceManager.h"
 
 #include <memory>
 #include <vector>
@@ -12,7 +13,7 @@
 class LuaConfigLoader
 {
 public:
-	LuaConfigLoader(std::shared_ptr<SparkGlobals> globals);
+	LuaConfigLoader(std::shared_ptr<SparkGlobals> globals, ResourceManager* resourceManager);
 	~LuaConfigLoader();
 
 	void setup();
@@ -20,10 +21,13 @@ public:
 
 private:
 	void setupWindowSettings();
+	void setupFunctions();
 
 private:
 	sol::state lua;
 
 	std::shared_ptr<SparkGlobals> mGlobals;
+
+	ResourceManager* mResourceManager;
 };
 
