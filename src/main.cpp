@@ -1,4 +1,5 @@
 #include "Engine/SceneManager.h"
+#include "Api/LuaConfigLoader.h"
 #include "Api/LuaApi.h"
 #include "Api/LuaManager.h"
 
@@ -10,6 +11,10 @@
 int main()
 {
     std::shared_ptr<SparkGlobals> sparkGlobals = std::make_shared<SparkGlobals>();
+
+    LuaConfigLoader luaConfigLoader(sparkGlobals);
+    luaConfigLoader.setup();
+    luaConfigLoader.init("data/scripts/config.lua");
 
     std::shared_ptr<sf::RenderWindow> window = std::make_shared<sf::RenderWindow>(sf::VideoMode(sparkGlobals->windowWidth, sparkGlobals->windowHeight), sparkGlobals->windowTitle);
     window->setFramerateLimit(sparkGlobals->framerateLimit);

@@ -1,8 +1,3 @@
--- System settings
-spark:setWindowTitle("Ethan's game")
-spark:setFramerateLimit(0)
-spark:regenerateWindow()
-
 -- Create a new scene called "game"
 local scene = Scene.new("game")
 

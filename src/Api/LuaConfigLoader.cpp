@@ -1,0 +1,58 @@
+#include "LuaConfigLoader.h"
+
+LuaConfigLoader::LuaConfigLoader(std::shared_ptr<SparkGlobals> globals)
+{
+	mGlobals = globals;
+
+    lua.open_libraries(sol::lib::base, sol::lib::io, sol::lib::math, sol::lib::table);
+}
+
+LuaConfigLoader::~LuaConfigLoader()
+{
+
+}
+
+void LuaConfigLoader::setup()
+{
+    lua["spark"] = lua.create_table();
+
+    setupWindowSettings();
+}
+
+bool LuaConfigLoader::init(std::string script)
+{
+    try
+    {
+        lua.safe_script_file(script);
+    }
+    catch (const sol::error& e)
+    {
+        std::cout << "Could not read config file" << std::endl;
+        std::cout << std::string(e.what()) << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
+void LuaConfigLoader::setupWindowSettings()
+{
+    /*
+    * =========================================
+    * Allow the dev to change the window title, width, height
+    * =========================================
+    */
+
+    lua["spark"]["setWindowSize"] = [this](sol::table spark, float width, float height) {
+        mGlobals->windowWidth = width;
+        mGlobals->windowHeight = height;
+    };
+
+    lua["spark"]["setWindowTitle"] = [this](sol::table spark, std::string title) {
+        mGlobals->windowTitle = title;
+    };
+
+    lua["spark"]["setFramerateLimit"] = [this](sol::table spark, int framerate) {
+        mGlobals->framerateLimit = framerate;
+    };
+}
