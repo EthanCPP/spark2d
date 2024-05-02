@@ -11,9 +11,9 @@ Scene::~Scene()
 
 }
 
-void Scene::init(ResourceManager* resourceManager)
+void Scene::init(ResourceManager* resourceManager, std::shared_ptr<SparkGlobals> sparkGlobals)
 {
-	entityManager = std::make_shared<EntityManager>(resourceManager);
+	entityManager = std::make_shared<EntityManager>(resourceManager, sparkGlobals);
 
 	mInitialised = true;
 }
@@ -28,9 +28,9 @@ void Scene::stop()
 
 }
 
-void Scene::update()
+void Scene::update(float dt)
 {
-	entityManager->update();
+	entityManager->update(dt);
 }
 
 void Scene::render(std::shared_ptr<sf::RenderWindow> window)

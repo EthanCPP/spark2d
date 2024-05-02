@@ -10,9 +10,13 @@ GameEntity::~GameEntity()
     mLuaStates.clear();
 }
 
-void GameEntity::init(ResourceManager* resourceManager)
+void GameEntity::init(ResourceManager* resourceManager, std::shared_ptr<SparkGlobals> sparkGlobals)
 {
     mResourceManager = resourceManager;
+    mSparkGlobals = sparkGlobals;
+
+    mStatic = false;
+    mVelocity = sf::Vector2f(0.f, 0.f);
 }
 
 void GameEntity::addLuaState(std::shared_ptr<LuaApi> luaState)
@@ -53,8 +57,16 @@ std::shared_ptr<IComponent> GameEntity::getComponent(std::string key)
     return mComponents[key];
 }
 
-void GameEntity::update()
+void GameEntity::update(float dt)
 {
+    if (!mStatic)
+    {
+        // Gravity (temp)
+        mVelocity += sf::Vector2f(mSparkGlobals->gravity.x * dt, mSparkGlobals->gravity.y * dt);
+        transform.position.x += mVelocity.x;
+        transform.position.y += mVelocity.y;
+    }
+
     for (auto const& component : mComponents)
     {
         component.second->update(transform);
@@ -99,6 +111,22 @@ void GameEntity::setY(float y)
 void GameEntity::setRotation(float angle)
 {
     transform.rotation.angle = angle;
+}
+
+bool GameEntity::getStatic()
+{
+    return mStatic;
+}
+
+void GameEntity::setStatic(bool bStatic)
+{
+    mStatic = bStatic;
+    mVelocity = sf::Vector2f(0.0f, 0.0f);
+}
+
+void GameEntity::applyVelocity(sf::Vector2f velocity)
+{
+    mVelocity += velocity;
 }
 
 GameEntityProperties& GameEntity::getDynamicProps()

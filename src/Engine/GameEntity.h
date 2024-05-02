@@ -7,6 +7,7 @@
 #include "../Components/RectangleComponent.h"
 #include "../Components/Transform.h"
 #include "ResourceManager.h"
+#include "SparkGlobals.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -87,7 +88,7 @@ public:
     GameEntity();
     ~GameEntity();
 
-    void init(ResourceManager* resourceManager);
+    void init(ResourceManager* resourceManager, std::shared_ptr<SparkGlobals> sparkGlobals);
     void addLuaState(std::shared_ptr<LuaApi> luaState);
 
     void addSpriteComponent(std::shared_ptr<SpriteComponent> spriteComponent);
@@ -97,7 +98,7 @@ public:
 
     std::shared_ptr<IComponent> getComponent(std::string key);
 
-    void update();
+    void update(float dt);
     void render(std::shared_ptr<sf::RenderWindow> window);
 
     float getX();
@@ -107,6 +108,11 @@ public:
     void setX(float x);
     void setY(float y);
     void setRotation(float angle);
+
+    bool getStatic();
+    void setStatic(bool bStatic);
+
+    void applyVelocity(sf::Vector2f velocity);
 
     GameEntityProperties& getDynamicProps();
 
@@ -119,6 +125,12 @@ private:
 
     Transform transform;
     ResourceManager* mResourceManager;
+    std::shared_ptr<SparkGlobals> mSparkGlobals;
 
     GameEntityProperties mDynamicProps;
+
+private:
+    // Physics
+    bool mStatic;
+    sf::Vector2f mVelocity;
 };

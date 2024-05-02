@@ -70,4 +70,15 @@ function spark:update()
     end
 end
 
+-- turn off gravity!
+function spark:keypressed(code)
+    if code == spark.keyboard.code.enter then
+        entity.static = not entity.static
+    end
+
+    if code == spark.keyboard.code.space then
+        entity:applyVelocity(0, -0.5)
+    end
+end
+
 local nameText = entity:getTextComponent("name")

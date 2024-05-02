@@ -57,6 +57,16 @@ void LuaConfigLoader::setupWindowSettings()
     lua["spark"]["setFramerateLimit"] = [this](sol::table spark, int framerate) {
         mGlobals->framerateLimit = framerate;
     };
+
+    /*
+    * =========================================
+    * Allow the dev to change the physics properties
+    * =========================================
+    */
+
+    lua["spark"]["setGravity"] = [this](sol::table spark, float x, float y) {
+        mGlobals->gravity = sf::Vector2f(x, y);
+    };
 }
 
 void LuaConfigLoader::setupFunctions()

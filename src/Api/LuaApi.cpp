@@ -147,7 +147,8 @@ void LuaApi::setupEntity()
         "x", sol::property(&GameEntity::getX, &GameEntity::setX),
         "y", sol::property(&GameEntity::getY, &GameEntity::setY),
         "rotation", sol::property(&GameEntity::getRotation, &GameEntity::setRotation),
-        "props", sol::property(&GameEntity::getDynamicProps)
+        "props", sol::property(&GameEntity::getDynamicProps),
+        "static", sol::property(&GameEntity::getStatic, &GameEntity::setStatic)
     );
 
 
@@ -264,6 +265,11 @@ void LuaApi::setupEntity()
     lua["Entity"]["destroy"] = [this](GameEntity& entity)
     {
         entitiesToDestroy.push_back(std::make_shared<GameEntity>(entity));
+    };
+
+    lua["Entity"]["applyVelocity"] = [this](GameEntity& entity, float x, float y)
+    {
+        entity.applyVelocity(sf::Vector2f(x, y));
     };
 }
 
@@ -769,6 +775,17 @@ void LuaApi::setupUtils()
         mWindow->create(sf::VideoMode(mGlobals->windowWidth, mGlobals->windowHeight), mGlobals->windowTitle);
         mWindow->setFramerateLimit(mGlobals->framerateLimit);
     };
+
+    /*
+    * =========================================
+    * Allow the dev to change the physics properties
+    * =========================================
+    */
+
+    lua["spark"]["setGravity"] = [this](sol::table spark, float x, float y) {
+        mGlobals->gravity = sf::Vector2f(x, y);
+    };
+
 }
 
 void LuaApi::setupTime()

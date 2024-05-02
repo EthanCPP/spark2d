@@ -1,8 +1,9 @@
 #include "SceneManager.h"
 
-SceneManager::SceneManager(ResourceManager* resourceManager)
+SceneManager::SceneManager(ResourceManager* resourceManager, std::shared_ptr<SparkGlobals> sparkGlobals)
 {
 	mResourceManager = resourceManager;
+	mSparkGlobals = sparkGlobals;
 }
 
 SceneManager::~SceneManager()
@@ -12,7 +13,7 @@ SceneManager::~SceneManager()
 
 void SceneManager::addScene(std::string key, std::shared_ptr<Scene> scene)
 {
-	scene->init(mResourceManager);
+	scene->init(mResourceManager, mSparkGlobals);
 	mScenes.insert({ key, scene });
 }
 
@@ -38,11 +39,11 @@ std::shared_ptr<Scene> SceneManager::getCurrentScene()
 	return mScenes[mCurrentScene];
 }
 
-void SceneManager::update()
+void SceneManager::update(float dt)
 {
 	if (!mCurrentScene.empty())
 	{
-		getCurrentScene()->update();
+		getCurrentScene()->update(dt);
 	}
 }
 
