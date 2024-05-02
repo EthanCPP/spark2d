@@ -149,6 +149,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Components\RectangleComponent.cpp" />
+    <ClCompile Include="src\Components\CircleComponent.cpp" />
     <ClCompile Include="src\Engine\ResourceManager.cpp" />
     <ClCompile Include="src\Api\LuaConfigLoader.cpp" />
     <ClCompile Include="src\Api\LuaManager.cpp" />
@@ -162,6 +164,8 @@
     <ClCompile Include="src\Components\TextComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Components\RectangleComponent.h" />
+    <ClInclude Include="src\Components\CircleComponent.h" />
     <ClInclude Include="src\Engine\ResourceManager.h" />
     <ClInclude Include="src\Api\LuaConfigLoader.h" />
     <ClInclude Include="src\Api\LuaManager.h" />

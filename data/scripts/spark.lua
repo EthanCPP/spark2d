@@ -24,6 +24,26 @@ playerText:setItalic(true)
 playerText.x = -50
 playerText.y = -50
 
+-- Add circle
+local playerCircle = player:addCircleComponent("circle")
+playerCircle:setRadius(25)
+playerCircle:setColourAlpha(60, 60, 255, 255)
+playerCircle:setOutlineThickness(5)
+playerCircle:setOutlineColourAlpha(255, 0, 0, 30)
+playerCircle:setTexture("images/bob.png")
+playerCircle.x = 100
+playerCircle.y = 100
+
+-- Add rect
+local playerRect = player:addRectangleComponent("rect")
+playerRect:setSize(70, 20)
+playerRect:setColourAlpha(60, 60, 255, 255)
+playerRect:setOutlineThickness(5)
+playerRect:setOutlineColourAlpha(255, 0, 0, 30)
+playerRect:setTexture("images/bob.png")
+playerRect.x = 40
+playerRect.y = 70
+
 -- Finally start the scene
 scene:start()
 

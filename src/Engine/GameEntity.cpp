@@ -34,6 +34,20 @@ void GameEntity::addTextComponent(std::shared_ptr<TextComponent> textComponent)
     mComponents.insert({ textComponent->key, textComponent });
 }
 
+void GameEntity::addCircleComponent(std::shared_ptr<CircleComponent> circleComponent)
+{
+    // todo: safer way of keying
+    circleComponent->init(mResourceManager);
+    mComponents.insert({ circleComponent->key, circleComponent });
+}
+
+void GameEntity::addRectangleComponent(std::shared_ptr<RectangleComponent> rectangleComponent)
+{
+    // todo: safer way of keying
+    rectangleComponent->init(mResourceManager);
+    mComponents.insert({ rectangleComponent->key, rectangleComponent });
+}
+
 std::shared_ptr<IComponent> GameEntity::getComponent(std::string key)
 {
     return mComponents[key];

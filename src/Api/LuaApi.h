@@ -74,6 +74,8 @@ private:
 	void setupEntity();
 	void setupSpriteComponent();
 	void setupTextComponent();
+	void setupCircleComponent();
+	void setupRectangleComponent();
 	void setupKeyboard();
 	void setupMouse();
 	void setupUtils();

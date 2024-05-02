@@ -25,6 +25,8 @@ void LuaApi::setup()
     setupEntity();
     setupSpriteComponent();
     setupTextComponent();
+    setupCircleComponent();
+    setupRectangleComponent();
     setupKeyboard();
     setupMouse();
     setupUtils();
@@ -199,6 +201,50 @@ void LuaApi::setupEntity()
         return std::dynamic_pointer_cast<TextComponent>(entity.getComponent(key));
     };
 
+
+    /*
+    * =========================================
+    * Convert the circle component to a shared pointer, add it to the desired entity
+    * =========================================
+    */
+
+    // -- entity:addCircleComponent(text)
+    lua["Entity"]["addCircleComponent"] = [this](GameEntity& entity, std::string key)
+    {
+        std::shared_ptr<CircleComponent> circleComponent = std::make_shared<CircleComponent>(key);
+        mSceneManager->getScene(entity.sceneKey)->entityManager->getEntity(entity.key)->addCircleComponent(circleComponent);
+
+        return circleComponent;
+    };
+
+    // -- entity:getCircleComponent(key)
+    lua["Entity"]["getCircleComponent"] = [this](GameEntity& entity, std::string key)
+    {
+        return std::dynamic_pointer_cast<CircleComponent>(entity.getComponent(key));
+    };
+
+
+    /*
+    * =========================================
+    * Convert the rectangle component to a shared pointer, add it to the desired entity
+    * =========================================
+    */
+
+    // -- entity:addRectangleComponent(text)
+    lua["Entity"]["addRectangleComponent"] = [this](GameEntity& entity, std::string key)
+    {
+        std::shared_ptr<RectangleComponent> rectangleComponent = std::make_shared<RectangleComponent>(key);
+        mSceneManager->getScene(entity.sceneKey)->entityManager->getEntity(entity.key)->addRectangleComponent(rectangleComponent);
+
+        return rectangleComponent;
+    };
+
+    // -- entity:getRectangleComponent(key)
+    lua["Entity"]["getRectangleComponent"] = [this](GameEntity& entity, std::string key)
+    {
+        return std::dynamic_pointer_cast<RectangleComponent>(entity.getComponent(key));
+    };
+
     lua["Entity"]["addScript"] = [this](GameEntity& entity, std::string path)
     {
         // todo implement this better
@@ -304,6 +350,126 @@ void LuaApi::setupTextComponent()
     lua["TextComponent"]["setItalic"] = [this](TextComponent& component, bool italic)
     {
         component.setItalic(italic);
+    };
+}
+
+void LuaApi::setupCircleComponent()
+{
+    /*
+    * =========================================
+    * Create a new circle component object
+    *
+    * DON'T CREATE COMPONENT THIS WAY. USE (Entity):addCircleComponent(key)
+    * =========================================
+    */
+    lua.new_usertype<CircleComponent>("CircleComponent",
+        sol::meta_function::construct,
+        sol::factories(
+            [this](std::string key) {
+                std::cout << "Please use (entity):addCircleComponent(key, path) instead of CircleComponent.new()!" << std::endl;
+                std::shared_ptr<CircleComponent> circleComponent = std::make_shared<CircleComponent>(key);
+
+                return circleComponent;
+            }
+        ),
+        "x", sol::property(&CircleComponent::getX, &CircleComponent::setX),
+        "y", sol::property(&CircleComponent::getY, &CircleComponent::setY),
+        "rotation", sol::property(&CircleComponent::getRotation, &CircleComponent::setRotation)
+    );
+
+    lua["CircleComponent"]["setRadius"] = [this](CircleComponent& component, float radius)
+    {
+        component.setRadius(radius);
+    };
+
+    lua["CircleComponent"]["setColour"] = [this](CircleComponent& component, int r, int g, int b)
+    {
+        component.setFillColour(r, g, b, 255);
+    };
+
+    lua["CircleComponent"]["setColourAlpha"] = [this](CircleComponent& component, int r, int g, int b, int a)
+    {
+        component.setFillColour(r, g, b, a);
+    };
+
+    lua["CircleComponent"]["setOutlineThickness"] = [this](CircleComponent& component, float thickness)
+    {
+        component.setOutlineThickness(thickness);
+    };
+
+    lua["CircleComponent"]["setOutlineColour"] = [this](CircleComponent& component, int r, int g, int b)
+    {
+        component.setOutlineColour(r, g, b, 255);
+    };
+
+    lua["CircleComponent"]["setOutlineColourAlpha"] = [this](CircleComponent& component, int r, int g, int b, int a)
+    {
+        component.setOutlineColour(r, g, b, a);
+    };
+
+    lua["CircleComponent"]["setTexture"] = [this](CircleComponent& component, std::string filepath)
+    {
+        component.setTexture(filepath);
+    };
+}
+
+void LuaApi::setupRectangleComponent()
+{
+    /*
+    * =========================================
+    * Create a new rectangle component object
+    *
+    * DON'T CREATE COMPONENT THIS WAY. USE (Entity):addRectangleComponent(key)
+    * =========================================
+    */
+    lua.new_usertype<RectangleComponent>("RectangleComponent",
+        sol::meta_function::construct,
+        sol::factories(
+            [this](std::string key) {
+                std::cout << "Please use (entity):addRectangleComponent(key, path) instead of RectangleComponent.new()!" << std::endl;
+                std::shared_ptr<RectangleComponent> rectangleComponent = std::make_shared<RectangleComponent>(key);
+
+                return rectangleComponent;
+            }
+        ),
+        "x", sol::property(&RectangleComponent::getX, &RectangleComponent::setX),
+        "y", sol::property(&RectangleComponent::getY, &RectangleComponent::setY),
+        "rotation", sol::property(&RectangleComponent::getRotation, &RectangleComponent::setRotation)
+    );
+
+    lua["RectangleComponent"]["setSize"] = [this](RectangleComponent& component, float width, float height)
+    {
+        component.setSize(width, height);
+    };
+
+    lua["RectangleComponent"]["setColour"] = [this](RectangleComponent& component, int r, int g, int b)
+    {
+        component.setFillColour(r, g, b, 255);
+    };
+
+    lua["RectangleComponent"]["setColourAlpha"] = [this](RectangleComponent& component, int r, int g, int b, int a)
+    {
+        component.setFillColour(r, g, b, a);
+    };
+
+    lua["RectangleComponent"]["setOutlineThickness"] = [this](RectangleComponent& component, float thickness)
+    {
+        component.setOutlineThickness(thickness);
+    };
+
+    lua["RectangleComponent"]["setOutlineColour"] = [this](RectangleComponent& component, int r, int g, int b)
+    {
+        component.setOutlineColour(r, g, b, 255);
+    };
+
+    lua["RectangleComponent"]["setOutlineColourAlpha"] = [this](RectangleComponent& component, int r, int g, int b, int a)
+    {
+        component.setOutlineColour(r, g, b, a);
+    };
+
+    lua["RectangleComponent"]["setTexture"] = [this](RectangleComponent& component, std::string filepath)
+    {
+        component.setTexture(filepath);
     };
 }
 

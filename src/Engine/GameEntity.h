@@ -3,6 +3,8 @@
 #include "../Components/Interface/IComponent.h"
 #include "../Components/SpriteComponent.h"
 #include "../Components/TextComponent.h"
+#include "../Components/CircleComponent.h"
+#include "../Components/RectangleComponent.h"
 #include "../Components/Transform.h"
 #include "ResourceManager.h"
 
@@ -90,6 +92,8 @@ public:
 
     void addSpriteComponent(std::shared_ptr<SpriteComponent> spriteComponent);
     void addTextComponent(std::shared_ptr<TextComponent> textComponent);
+    void addCircleComponent(std::shared_ptr<CircleComponent> circleComponent);
+    void addRectangleComponent(std::shared_ptr<RectangleComponent> rectangleComponent);
 
     std::shared_ptr<IComponent> getComponent(std::string key);
 
