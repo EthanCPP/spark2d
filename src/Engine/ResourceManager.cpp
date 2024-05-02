@@ -37,3 +37,31 @@ void ResourceManager::unloadTexture(std::string path)
         mTextures.erase(path);
     }
 }
+
+std::shared_ptr<sf::Font> ResourceManager::getFont(std::string path)
+{
+    if (mFonts.find(path) != mFonts.end())
+    {
+        // Already exists - just return the item
+        return mFonts[path];
+    }
+
+    std::shared_ptr<sf::Font> font = std::make_shared<sf::Font>();
+
+    if (!font->loadFromFile("data/" + path))
+    {
+        std::cout << "Unable to load font from file: " << path << std::endl;
+    }
+
+    mFonts.insert({ path, font });
+
+    return font;
+}
+
+void ResourceManager::unloadFont(std::string path)
+{
+    if (mFonts.find(path) != mFonts.end())
+    {
+        mFonts.erase(path);
+    }
+}

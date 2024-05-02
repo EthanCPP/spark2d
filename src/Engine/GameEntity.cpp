@@ -22,8 +22,16 @@ void GameEntity::addLuaState(std::shared_ptr<LuaApi> luaState)
 
 void GameEntity::addSpriteComponent(std::shared_ptr<SpriteComponent> spriteComponent)
 {
+    // todo: safer way of keying
     spriteComponent->init(mResourceManager);
     mComponents.insert({ spriteComponent->key, spriteComponent });
+}
+
+void GameEntity::addTextComponent(std::shared_ptr<TextComponent> textComponent)
+{
+    // todo: safer way of keying
+    textComponent->init(mResourceManager);
+    mComponents.insert({ textComponent->key, textComponent });
 }
 
 std::shared_ptr<IComponent> GameEntity::getComponent(std::string key)

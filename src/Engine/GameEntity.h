@@ -2,6 +2,7 @@
 
 #include "../Components/Interface/IComponent.h"
 #include "../Components/SpriteComponent.h"
+#include "../Components/TextComponent.h"
 #include "../Components/Transform.h"
 #include "ResourceManager.h"
 
@@ -88,6 +89,7 @@ public:
     void addLuaState(std::shared_ptr<LuaApi> luaState);
 
     void addSpriteComponent(std::shared_ptr<SpriteComponent> spriteComponent);
+    void addTextComponent(std::shared_ptr<TextComponent> textComponent);
 
     std::shared_ptr<IComponent> getComponent(std::string key);
 

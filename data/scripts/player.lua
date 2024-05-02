@@ -69,3 +69,5 @@ function spark:update()
         entity.rotation = entity.rotation + (100 * spark.time.delta)
     end
 end
+
+local nameText = entity:getTextComponent("name")

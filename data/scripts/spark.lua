@@ -13,15 +13,17 @@ player:addScript("player.lua")
 local playerSprite = player:addSpriteComponent("body", "images/bob.png")
 local jamSprite = player:addSpriteComponent("jam", "images/jam.png")
 
+-- Add text
+local playerText = player:addTextComponent("name", "fonts/comicsans.ttf")
+playerText:setText("Ethan")
+playerText:setCharacterSize(24)
+playerText:setColour(255, 60, 60)
+playerText:setBold(true)
+playerText:setUnderlined(true)
+playerText:setItalic(true)
+playerText.x = -50
+playerText.y = -50
+
 -- Finally start the scene
 scene:start()
 
-c = coroutine.wrap(function()
-    for i = 3, 1, -1 do
-        print("Destroying in " .. i)
-        spark.time:wait(c, 1)
-    end
-
-    player:destroy()
-end)
-c()

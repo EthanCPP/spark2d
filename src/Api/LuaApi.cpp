@@ -24,6 +24,7 @@ void LuaApi::setup()
     setupScene();
     setupEntity();
     setupSpriteComponent();
+    setupTextComponent();
     setupKeyboard();
     setupMouse();
     setupUtils();
@@ -175,6 +176,29 @@ void LuaApi::setupEntity()
         return std::dynamic_pointer_cast<SpriteComponent>(entity.getComponent(key));
     };
 
+
+    /*
+    * =========================================
+    * Convert the text component to a shared pointer, add it to the desired entity
+    * =========================================
+    */
+
+    // -- entity:addTextComponent(text)
+    lua["Entity"]["addTextComponent"] = [this](GameEntity& entity, std::string key, std::string filepath)
+    {
+        std::shared_ptr<TextComponent> textComponent = std::make_shared<TextComponent>(key);
+        mSceneManager->getScene(entity.sceneKey)->entityManager->getEntity(entity.key)->addTextComponent(textComponent);
+        textComponent->loadFont(filepath);
+
+        return textComponent;
+    };
+
+    // -- entity:getTextComponent(key)
+    lua["Entity"]["getTextComponent"] = [this](GameEntity& entity, std::string key)
+    {
+        return std::dynamic_pointer_cast<TextComponent>(entity.getComponent(key));
+    };
+
     lua["Entity"]["addScript"] = [this](GameEntity& entity, std::string path)
     {
         // todo implement this better
@@ -221,6 +245,66 @@ void LuaApi::setupSpriteComponent()
         "rotation", sol::property(&SpriteComponent::getRotation, &SpriteComponent::setRotation)
     );
 
+}
+
+void LuaApi::setupTextComponent()
+{
+    /*
+    * =========================================
+    * Create a new text component object with desired font
+    *
+    * DON'T CREATE TEXTCOMPONENT THIS WAY. USE (Entity):addTextComponent(key, path)
+    * =========================================
+    */
+    lua.new_usertype<TextComponent>("TextComponent",
+        sol::meta_function::construct,
+        sol::factories(
+            [this](std::string key, std::string filepath) {
+                std::cout << "Please use (entity):addTextComponent(key, path) instead of TextComponent.new()!" << std::endl;
+                std::shared_ptr<TextComponent> textComponent = std::make_shared<TextComponent>(key);
+
+                return textComponent;
+            }
+        ),
+        "x", sol::property(&TextComponent::getX, &TextComponent::setX),
+        "y", sol::property(&TextComponent::getY, &TextComponent::setY),
+        "rotation", sol::property(&TextComponent::getRotation, &TextComponent::setRotation)
+    );
+
+    lua["TextComponent"]["setText"] = [this](TextComponent& component, std::string text)
+    {
+        component.setText(text);
+    };
+
+    lua["TextComponent"]["setCharacterSize"] = [this](TextComponent& component, int size)
+    {
+        component.setCharacterSize(size);
+    };
+
+    lua["TextComponent"]["setColour"] = [this](TextComponent& component, int r, int g, int b)
+    {
+        component.setFillColour(r, g, b, 255);
+    };
+
+    lua["TextComponent"]["setColourAlpha"] = [this](TextComponent& component, int r, int g, int b, int a)
+    {
+        component.setFillColour(r, g, b, a);
+    };
+
+    lua["TextComponent"]["setBold"] = [this](TextComponent& component, bool bold)
+    {
+        component.setBold(bold);
+    };
+
+    lua["TextComponent"]["setUnderlined"] = [this](TextComponent& component, bool underlined)
+    {
+        component.setUnderlined(underlined);
+    };
+
+    lua["TextComponent"]["setItalic"] = [this](TextComponent& component, bool italic)
+    {
+        component.setItalic(italic);
+    };
 }
 
 void LuaApi::setupSandbox()

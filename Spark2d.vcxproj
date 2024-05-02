@@ -159,6 +159,7 @@
     <ClCompile Include="src\Components\SpriteComponent.cpp" />
     <ClCompile Include="src\Engine\GameEntity.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Components\TextComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\ResourceManager.h" />
@@ -175,6 +176,7 @@
     <ClInclude Include="src\Components\SpriteComponent.h" />
     <ClInclude Include="src\Engine\GameEntity.h" />
     <ClInclude Include="src\Engine\SparkGlobals.h" />
+    <ClInclude Include="src\Components\TextComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

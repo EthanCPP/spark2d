@@ -73,6 +73,7 @@ private:
 	void setupScene();
 	void setupEntity();
 	void setupSpriteComponent();
+	void setupTextComponent();
 	void setupKeyboard();
 	void setupMouse();
 	void setupUtils();
