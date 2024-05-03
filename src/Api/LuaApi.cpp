@@ -150,7 +150,8 @@ void LuaApi::setupEntity()
         "props", sol::property(&GameEntity::getDynamicProps),
         "static", sol::property(&GameEntity::getStatic, &GameEntity::setStatic),
         "vx", sol::property(&GameEntity::getXVelocity, &GameEntity::setXVelocity),
-        "vy", sol::property(&GameEntity::getYVelocity, &GameEntity::setYVelocity)
+        "vy", sol::property(&GameEntity::getYVelocity, &GameEntity::setYVelocity),
+        "debug", sol::property(&GameEntity::getColliderDebug, &GameEntity::setColliderDebug)
     );
 
 
@@ -272,6 +273,16 @@ void LuaApi::setupEntity()
     lua["Entity"]["applyVelocity"] = [this](GameEntity& entity, float x, float y)
     {
         entity.applyVelocity(sf::Vector2f(x, y));
+    };
+
+    lua["Entity"]["setColliderSize"] = [this](GameEntity& entity, float width, float height)
+    {
+        entity.setColliderSize(width, height);
+    };
+
+    lua["Entity"]["setColliderOffset"] = [this](GameEntity& entity, float x, float y)
+    {
+        entity.setColliderOffset(x, y);
     };
 }
 

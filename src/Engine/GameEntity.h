@@ -118,12 +118,22 @@ public:
     void setXVelocity(float x);
     void setYVelocity(float y);
 
+    void setColliderSize(float width, float height);
+    void setColliderOffset(float x, float y);
+    void setColliderDebug(bool debug);
+    bool getColliderDebug();
+    sf::FloatRect getCollider();
+
     GameEntityProperties& getDynamicProps();
 
     std::string key;
     std::string sceneKey;
 
     std::vector<std::shared_ptr<LuaApi>> mLuaStates;
+
+
+    sf::Vector2f mVelocity;
+    std::vector<std::shared_ptr<GameEntity>> mColliders;
 private:
     std::map<std::string, std::shared_ptr<IComponent>> mComponents;
 
@@ -136,5 +146,7 @@ private:
 private:
     // Physics
     bool mStatic;
-    sf::Vector2f mVelocity;
+    sf::RectangleShape mColliderDebug;
+    bool mShowColliderDebug;
+    sf::FloatRect mCollider;
 };

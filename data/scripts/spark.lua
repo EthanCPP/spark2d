@@ -5,6 +5,9 @@ local scene = Scene.new("game")
 local player = scene:createEntity("player")
 player.x = 200
 player.y = 200
+
+player:setColliderSize(32, 32)
+player.debug = true
 -- player.static = true -- do not apply gravity
 
 -- Attach the player script
@@ -12,38 +15,48 @@ player:addScript("player.lua")
 
 -- Add the sprite component to our "bob" entity
 local playerSprite = player:addSpriteComponent("body", "images/bob.png")
-local jamSprite = player:addSpriteComponent("jam", "images/jam.png")
 
--- Add text
-local playerText = player:addTextComponent("name", "fonts/comicsans.ttf")
-playerText:setText("Ethan")
-playerText:setCharacterSize(24)
-playerText:setColour(255, 60, 60)
-playerText:setBold(true)
-playerText:setUnderlined(true)
-playerText:setItalic(true)
-playerText.x = -50
-playerText.y = -50
 
--- Add circle
-local playerCircle = player:addCircleComponent("circle")
-playerCircle:setRadius(25)
-playerCircle:setColourAlpha(60, 60, 255, 255)
-playerCircle:setOutlineThickness(5)
-playerCircle:setOutlineColourAlpha(255, 0, 0, 30)
-playerCircle:setTexture("images/bob.png")
-playerCircle.x = 100
-playerCircle.y = 100
+-- Add a floor
+local floor = scene:createEntity("floor")
+floor.x = 0
+floor.y = 1000;
+floor.static = true
+floor.debug = true
+floor:setColliderSize(1920, 40)
 
--- Add rect
-local playerRect = player:addRectangleComponent("rect")
-playerRect:setSize(70, 20)
-playerRect:setColourAlpha(60, 60, 255, 255)
-playerRect:setOutlineThickness(5)
-playerRect:setOutlineColourAlpha(255, 0, 0, 30)
-playerRect:setTexture("images/bob.png")
-playerRect.x = 40
-playerRect.y = 70
+local floorRect = floor:addRectangleComponent("floorRect")
+floorRect:setSize(1920, 40)
+floorRect:setColour(120, 120, 240)
+
+local collider1 = scene:createEntity("collider1")
+collider1.x = 2
+collider1.y = 0
+collider1.static = true
+collider1.debug = true
+collider1:setColliderSize(50, 1080)
+
+local collider2 = scene:createEntity("collider2")
+collider2.x = 1900
+collider2.y = 0
+collider2.static = true
+collider2.debug = true
+collider2:setColliderSize(50, 1080)
+
+local collider3 = scene:createEntity("collider3")
+collider3.x = 3
+collider3.y = 3
+collider3.static = true
+collider3.debug = true
+collider3:setColliderSize(1920, 30)
+
+local collider4 = scene:createEntity("collider4")
+collider4.x = 540
+collider4.y = 320
+collider4.static = true
+collider4.debug = true
+collider4:setColliderSize(100, 150)
+
 
 -- Finally start the scene
 scene:start()

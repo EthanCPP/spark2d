@@ -19,7 +19,7 @@ void SpriteComponent::loadTexture(std::string filepath)
 {
     mTexture = mResourceManager->getTexture(filepath);
     mSprite.setTexture(*mTexture);
-    mSprite.setOrigin(mSprite.getTextureRect().width / 2, mSprite.getTextureRect().height / 2);
+    //mSprite.setOrigin(mSprite.getTextureRect().width / 2, mSprite.getTextureRect().height / 2);
 }
 
 void SpriteComponent::update(Transform& globalTransform)

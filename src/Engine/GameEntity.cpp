@@ -17,6 +17,11 @@ void GameEntity::init(ResourceManager* resourceManager, std::shared_ptr<SparkGlo
 
     mStatic = false;
     mVelocity = sf::Vector2f(0.f, 0.f);
+    mCollider = sf::FloatRect(0.f, 0.f, 0.f, 0.f);
+    mShowColliderDebug = false;
+    mColliderDebug.setOutlineColor(sf::Color(255, 0, 0));
+    mColliderDebug.setFillColor(sf::Color(0, 0, 0, 0));
+    mColliderDebug.setOutlineThickness(2);
 }
 
 void GameEntity::addLuaState(std::shared_ptr<LuaApi> luaState)
@@ -63,6 +68,82 @@ void GameEntity::update(float dt)
     {
         // Gravity (temp)
         mVelocity += sf::Vector2f(mSparkGlobals->gravity.x, mSparkGlobals->gravity.y);
+
+        if (mColliders.size() > 0)
+        {
+            for (auto& collider : mColliders)
+            {
+                if ((getCollider().top + getCollider().height > collider->getCollider().top) && // The collision is at the bottom of this object
+                    (getCollider().left + getCollider().width - 2 > collider->getCollider().left) && // Make sure this object sits between the X coords of the other object
+                    (getCollider().left + 2 < collider->getCollider().left + collider->getCollider().width) && 
+                    mVelocity.y > 0)
+                {
+                    // Bottom collisions
+                    sf::Vector2f currentPos = transform.position;
+                    sf::Vector2f newPos = sf::Vector2f(currentPos.x, collider->getCollider().top - getCollider().height - 1);
+                    sf::Vector2f diff = newPos - currentPos;
+                    float distance = sqrt(powf(diff.x, 2) + powf(diff.y, 2));
+
+                    if (distance < 2) // Make sure the distance we are snapping to isn't too great
+                    {
+                        mVelocity.y = 0;
+                        transform.position.y = collider->getCollider().top - getCollider().height - 1;
+                    }
+                }
+                else if ((getCollider().top < collider->getCollider().top + collider->getCollider().height) &&
+                    (getCollider().left + getCollider().width - 2 > collider->getCollider().left) &&
+                    (getCollider().left + 2 < collider->getCollider().left + collider->getCollider().width) &&
+                    mVelocity.y < 0)
+                {
+                    // Top collisions
+                    sf::Vector2f currentPos = transform.position;
+                    sf::Vector2f newPos = sf::Vector2f(currentPos.x, collider->getCollider().top + collider->getCollider().height + 1);
+                    sf::Vector2f diff = newPos - currentPos;
+                    float distance = sqrt(powf(diff.x, 2) + powf(diff.y, 2));
+
+                    if (distance < 2)
+                    {
+                        mVelocity.y = 0;
+                        transform.position.y = collider->getCollider().top + collider->getCollider().height + 1;
+                    }
+                }
+                else if ((getCollider().left < collider->getCollider().left + collider->getCollider().width) &&
+                    (getCollider().top + getCollider().height - 2 > collider->getCollider().top) &&
+                    (getCollider().top + 2 < collider->getCollider().top + collider->getCollider().height) &&
+                    mVelocity.x < 0)
+                {
+                    // Left collisions
+                    sf::Vector2f currentPos = transform.position;
+                    sf::Vector2f newPos = sf::Vector2f(collider->getCollider().left + collider->getCollider().width + 1, currentPos.y);
+                    sf::Vector2f diff = newPos - currentPos;
+                    float distance = sqrt(powf(diff.x, 2) + powf(diff.y, 2));
+
+                    if (distance < 2)
+                    {
+                        mVelocity.x = 0;
+                        transform.position.x = collider->getCollider().left + collider->getCollider().width + 1;
+                    }
+                }
+                else if ((getCollider().left + getCollider().width > collider->getCollider().left) &&
+                    (getCollider().top + getCollider().height - 2 > collider->getCollider().top) &&
+                    (getCollider().top + 2 < collider->getCollider().top + collider->getCollider().height) &&
+                    mVelocity.x > 0)
+                {
+                    // Right collisions
+                    sf::Vector2f currentPos = transform.position;
+                    sf::Vector2f newPos = sf::Vector2f(collider->getCollider().left - getCollider().width - 1, currentPos.y);
+                    sf::Vector2f diff = newPos - currentPos;
+                    float distance = sqrt(powf(diff.x, 2) + powf(diff.y, 2));
+
+                    if (distance < 2)
+                    {
+                        mVelocity.x = 0;
+                        transform.position.x = collider->getCollider().left - getCollider().width - 1;
+                    }
+                }
+            }
+        }
+
         transform.position.x += mVelocity.x * dt;
         transform.position.y += mVelocity.y * dt;
     }
@@ -70,6 +151,12 @@ void GameEntity::update(float dt)
     for (auto const& component : mComponents)
     {
         component.second->update(transform);
+    }
+
+    if (mShowColliderDebug)
+    {
+        mColliderDebug.setPosition(transform.position + mCollider.getPosition());
+        mColliderDebug.setSize(mCollider.getSize());
     }
 }
 
@@ -80,6 +167,11 @@ void GameEntity::render(std::shared_ptr<sf::RenderWindow> window)
         if (component.second->isDrawable()) {
             component.second->render(window);
         }
+    }
+
+    if (mShowColliderDebug)
+    {
+        window->draw(mColliderDebug);
     }
 }
 
@@ -147,6 +239,34 @@ void GameEntity::setXVelocity(float x)
 void GameEntity::setYVelocity(float y)
 {
     mVelocity.y = y;
+}
+
+void GameEntity::setColliderSize(float width, float height)
+{
+    mCollider = sf::FloatRect(mCollider.left, mCollider.top, width, height);
+}
+
+void GameEntity::setColliderOffset(float x, float y)
+{
+    mCollider = sf::FloatRect(x, y, mCollider.width, mCollider.height);
+}
+
+void GameEntity::setColliderDebug(bool debug)
+{
+    mShowColliderDebug = debug;
+}
+
+bool GameEntity::getColliderDebug()
+{
+    return mShowColliderDebug;
+}
+
+sf::FloatRect GameEntity::getCollider()
+{
+    return sf::FloatRect(
+        transform.position + mCollider.getPosition(),
+        mCollider.getSize()
+    );
 }
 
 GameEntityProperties& GameEntity::getDynamicProps()

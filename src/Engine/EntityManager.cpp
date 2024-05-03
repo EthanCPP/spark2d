@@ -31,6 +31,25 @@ void EntityManager::update(float dt)
 {
     for (auto const& entity : mEntities)
     {
+        entity.second->mColliders.clear();
+
+        for (auto const& otherEntity : mEntities)
+        {
+            if (entity.first == otherEntity.first)
+                continue;
+
+            const sf::FloatRect entityCollider = entity.second->getCollider();
+            const sf::FloatRect otherEntityCollider = otherEntity.second->getCollider();
+
+            if (entityCollider.left + entityCollider.width >= otherEntityCollider.left &&
+                entityCollider.top + entityCollider.height >= otherEntityCollider.top &&
+                entityCollider.left <= otherEntityCollider.left + otherEntityCollider.width &&
+                entityCollider.top <= otherEntityCollider.top + otherEntityCollider.height)
+            {
+                entity.second->mColliders.push_back(otherEntity.second);
+            }
+        }
+
         entity.second->update(dt);
     }
 }
