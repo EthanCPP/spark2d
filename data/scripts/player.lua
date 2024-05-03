@@ -4,22 +4,49 @@ local jamSprite = entity:getSpriteComponent("jam")
 
 function spark:update()
     -- Entity movement
-    if spark.keyboard:down(spark.keyboard.code.w) then
-        print("UP")
-        entity.y = entity.y - (300 * spark.time.delta)
-    end
+    -- if spark.keyboard:down(spark.keyboard.code.w) then
+    --     print("UP")
+    --     entity.y = entity.y - (300 * spark.time.delta)
+    -- end
     
-    if spark.keyboard:down(spark.keyboard.code.s) then
-        entity.y = entity.y + (300 * spark.time.delta)
-    end
+    -- if spark.keyboard:down(spark.keyboard.code.s) then
+    --     entity.y = entity.y + (300 * spark.time.delta)
+    -- end
     
-    if spark.keyboard:down(spark.keyboard.code.a) then
-        entity.x = entity.x - (300 * spark.time.delta)
-    end
+    -- if spark.keyboard:down(spark.keyboard.code.a) then
+    --     entity.x = entity.x - (300 * spark.time.delta)
+    -- end
     
-    if spark.keyboard:down(spark.keyboard.code.d) then
-        entity.x = entity.x + (300 * spark.time.delta)
-    end
+    -- if spark.keyboard:down(spark.keyboard.code.d) then
+    --     entity.x = entity.x + (300 * spark.time.delta)
+    -- end
+
+    -- Entity movement w/ physics tests
+    -- if spark.keyboard:down(spark.keyboard.code.w) then
+    -- end
+    
+    -- if spark.keyboard:down(spark.keyboard.code.s) then
+    -- end
+    
+    -- if spark.keyboard:down(spark.keyboard.code.a) then
+    --     if entity.vx > -1000 then
+    --         entity:applyVelocity(-1.5, 0)
+    --     end
+    -- elseif spark.keyboard:down(spark.keyboard.code.d) then
+    --     if entity.vx < 1000 then
+    --         entity:applyVelocity(1.5, 0)
+    --     end
+    -- else
+    --     -- apply drag
+    --     if (math.abs(entity.vx) < 10) then
+    --         entity.vx = 0
+    --     elseif (entity.vx < 0) then
+    --         entity:applyVelocity(1, 0)
+    --     else
+    --         entity:applyVelocity(-1, 0)
+    --     end
+    -- end
+
 
     -- Sprite separation movement
     if spark.keyboard:down(spark.keyboard.code.up) then
@@ -77,7 +104,13 @@ function spark:keypressed(code)
     end
 
     if code == spark.keyboard.code.space then
-        entity:applyVelocity(0, -0.5)
+        if entity.vy > 0 then
+            -- if falling, apply a lot of velocity
+            entity:applyVelocity(0, -2000)
+        else
+            -- jumping, apply less velocity
+            entity:applyVelocity(0, -500)
+        end
     end
 end
 

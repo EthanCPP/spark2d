@@ -5,7 +5,7 @@ local scene = Scene.new("game")
 local player = scene:createEntity("player")
 player.x = 200
 player.y = 200
-player.static = true -- do not apply gravity
+-- player.static = true -- do not apply gravity
 
 -- Attach the player script
 player:addScript("player.lua")

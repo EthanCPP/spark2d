@@ -62,9 +62,9 @@ void GameEntity::update(float dt)
     if (!mStatic)
     {
         // Gravity (temp)
-        mVelocity += sf::Vector2f(mSparkGlobals->gravity.x * dt, mSparkGlobals->gravity.y * dt);
-        transform.position.x += mVelocity.x;
-        transform.position.y += mVelocity.y;
+        mVelocity += sf::Vector2f(mSparkGlobals->gravity.x, mSparkGlobals->gravity.y);
+        transform.position.x += mVelocity.x * dt;
+        transform.position.y += mVelocity.y * dt;
     }
 
     for (auto const& component : mComponents)
@@ -124,9 +124,29 @@ void GameEntity::setStatic(bool bStatic)
     mVelocity = sf::Vector2f(0.0f, 0.0f);
 }
 
-void GameEntity::applyVelocity(sf::Vector2f velocity)
+void GameEntity::applyVelocity(sf::Vector2f velocity) 
 {
     mVelocity += velocity;
+}
+
+float GameEntity::getXVelocity()
+{
+    return mVelocity.x;
+}
+
+float GameEntity::getYVelocity()
+{
+    return mVelocity.y;
+}
+
+void GameEntity::setXVelocity(float x)
+{
+    mVelocity.x = x;
+}
+
+void GameEntity::setYVelocity(float y)
+{
+    mVelocity.y = y;
 }
 
 GameEntityProperties& GameEntity::getDynamicProps()

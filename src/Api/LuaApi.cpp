@@ -148,7 +148,9 @@ void LuaApi::setupEntity()
         "y", sol::property(&GameEntity::getY, &GameEntity::setY),
         "rotation", sol::property(&GameEntity::getRotation, &GameEntity::setRotation),
         "props", sol::property(&GameEntity::getDynamicProps),
-        "static", sol::property(&GameEntity::getStatic, &GameEntity::setStatic)
+        "static", sol::property(&GameEntity::getStatic, &GameEntity::setStatic),
+        "vx", sol::property(&GameEntity::getXVelocity, &GameEntity::setXVelocity),
+        "vy", sol::property(&GameEntity::getYVelocity, &GameEntity::setYVelocity)
     );
 
 

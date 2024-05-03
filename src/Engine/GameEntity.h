@@ -113,6 +113,10 @@ public:
     void setStatic(bool bStatic);
 
     void applyVelocity(sf::Vector2f velocity);
+    float getXVelocity();
+    float getYVelocity();
+    void setXVelocity(float x);
+    void setYVelocity(float y);
 
     GameEntityProperties& getDynamicProps();
 
