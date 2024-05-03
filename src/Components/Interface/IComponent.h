@@ -22,7 +22,7 @@ public:
     }
 
     virtual float getRotation() {
-        return mLocalTransform.rotation.angle;
+        return mLocalTransform.rotation;
     }
 
     virtual void setX(float x) {
@@ -34,7 +34,7 @@ public:
     }
 
     virtual void setRotation(float angle) {
-        mLocalTransform.rotation.angle = angle;
+        mLocalTransform.rotation = angle;
     }
 
 protected:

@@ -25,12 +25,12 @@ void SpriteComponent::loadTexture(std::string filepath)
 void SpriteComponent::update(Transform& globalTransform)
 {
     sf::Transform parentTransform;
-    parentTransform.translate(globalTransform.position.x, globalTransform.position.y);
-    parentTransform.rotate(globalTransform.rotation.angle);
+    parentTransform.translate(globalTransform.position);
+    parentTransform.rotate(globalTransform.rotation);
 
     sf::Transform childTransform;
-    childTransform.translate(mLocalTransform.position.x, mLocalTransform.position.y);
-    childTransform.rotate(mLocalTransform.rotation.angle);
+    childTransform.translate(mLocalTransform.position);
+    childTransform.rotate(mLocalTransform.rotation);
 
     mFinalTransform = parentTransform * childTransform;
 }

@@ -1,9 +1,8 @@
 #pragma once
-#include "Rotation.h"
-#include "Position.h"
+#include <SFML/Graphics.hpp>
 
 struct Transform
 {
-	Rotation rotation;
-	Position position;
+	float rotation = 0;
+	sf::Vector2f position = sf::Vector2f(0.f, 0.f);
 };

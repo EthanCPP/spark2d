@@ -95,7 +95,7 @@ float GameEntity::getY()
 
 float GameEntity::getRotation()
 {
-    return transform.rotation.angle;
+    return transform.rotation;
 }
 
 void GameEntity::setX(float x)
@@ -110,7 +110,7 @@ void GameEntity::setY(float y)
 
 void GameEntity::setRotation(float angle)
 {
-    transform.rotation.angle = angle;
+    transform.rotation = angle;
 }
 
 bool GameEntity::getStatic()

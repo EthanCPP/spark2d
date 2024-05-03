@@ -170,8 +170,6 @@
     <ClInclude Include="src\Api\LuaConfigLoader.h" />
     <ClInclude Include="src\Api\LuaManager.h" />
     <ClInclude Include="src\Api\LuaApi.h" />
-    <ClInclude Include="src\Components\Position.h" />
-    <ClInclude Include="src\Components\Rotation.h" />
     <ClInclude Include="src\Components\Transform.h" />
     <ClInclude Include="src\Engine\SceneManager.h" />
     <ClInclude Include="src\Engine\Scene.h" />
