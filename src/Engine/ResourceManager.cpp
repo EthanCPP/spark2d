@@ -65,3 +65,31 @@ void ResourceManager::unloadFont(std::string path)
         mFonts.erase(path);
     }
 }
+
+std::shared_ptr<sf::SoundBuffer> ResourceManager::getSoundBuffer(std::string path)
+{
+    if (mSoundBuffers.find(path) != mSoundBuffers.end())
+    {
+        // Already exists - just return the item
+        return mSoundBuffers[path];
+    }
+
+    std::shared_ptr<sf::SoundBuffer> soundBuffer = std::make_shared<sf::SoundBuffer>();
+
+    if (!soundBuffer->loadFromFile("data/" + path))
+    {
+        std::cout << "Unable to load sound from file: " << path << std::endl;
+    }
+
+    mSoundBuffers.insert({ path, soundBuffer });
+
+    return soundBuffer;
+}
+
+void ResourceManager::unloadSoundBuffer(std::string path)
+{
+    if (mSoundBuffers.find(path) != mSoundBuffers.end())
+    {
+        mSoundBuffers.erase(path);
+    }
+}

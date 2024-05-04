@@ -5,6 +5,7 @@ local distance = 540
 
 local bird = scene:getEntity("bird")
 local fruit = scene:getEntity("fruit")
+local fruit2 = scene:getEntity("fruit2")
 
 function set()
     if entity.props.pipe == "top" then
@@ -25,21 +26,38 @@ function set()
 
         entity.y = posYTop
 
-        local bottomPipe = scene:getEntity("pipe1_bottom")
-        bottomPipe.y = posYBottom
+        if entity.props.pipenumber == 1 then
+            local bottomPipe = scene:getEntity("pipe1_bottom")
+            bottomPipe.y = posYBottom
+        else
+            local bottomPipe = scene:getEntity("pipe2_bottom")
+            bottomPipe.y = posYBottom
+        end
     end
 end
 
 set()
 
 function spark:update()
-    local speed = 100 + (bird.props.score * 5)
-    entity.x = entity.x - (speed * spark.time.delta)
-    fruit.x = entity.x + 5
+    if not bird.props.dead then
+        local speed = 100 + (bird.props.score * 5)
+        entity.x = entity.x - (speed * spark.time.delta)
+        
+        if entity.props.pipenumber == 1 then
+            fruit.x = entity.x + 5
+        else
+            fruit2.x = entity.x + 5
+        end
 
-    if entity.x < -52 then
-        set()
-        entity.x = 300
-        fruit.props.eaten = false
+        if entity.x < -52 then
+            set()
+            entity.x = 300
+
+            if entity.props.pipenumber == 1 then
+                fruit.props.eaten = false
+            else
+                fruit2.props.eaten = false
+            end
+        end
     end
 end

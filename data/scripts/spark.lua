@@ -4,26 +4,35 @@ scene:start()
 
 -- Create the background
 local eBackground = scene:createEntity("background")
-eBackground:addSpriteComponent("background_sprite", "images/flappy/background-day.png")
+local bgSpr1 = eBackground:addSpriteComponent("background_sprite", "images/flappy/background-day.png")
+local bgSpr2 = eBackground:addSpriteComponent("background_sprite2", "images/flappy/background-day.png")
+bgSpr2.x = bgSpr1:getSize().width
 eBackground.static = true
+eBackground.zindex = -1
 
 -- Create the floor
 local eFloor = scene:createEntity("floor")
-eFloor:addSpriteComponent("floor_sprite", "images/flappy/base.png")
+local floorSpr1 = eFloor:addSpriteComponent("floor_sprite", "images/flappy/base.png")
+local floorSpr2 = eFloor:addSpriteComponent("floor_sprite2", "images/flappy/base.png")
+floorSpr2.x = floorSpr1:getSize().width
 eFloor.static = true
 eFloor.y = 450
 eFloor.props.kills = true
 eFloor:setColliderSize(336, 112)
+eFloor.zindex = 1
 
 -- Create the bird
 local eBird = scene:createEntity("bird")
-eBird:addSpriteComponent("bird_sprite", "images/flappy/redbird-downflap.png")
+local eBirdSprite = eBird:addSpriteComponent("bird_sprite", "images/flappy/redbird-downflap.png")
 eBird.y = 200
 eBird.x = 50
 eBird.props.dead = false
 eBird.props.score = 0
-eBird:setColliderSize(34, 24)
+eBirdSprite:setOrigin(eBirdSprite:getSize().width / 2, eBirdSprite:getSize().height / 2)
+eBird:setColliderSize(18, 10)
+eBird:setColliderOffset(-10, -5)
 eBird:addScript("bird.lua")
+eBird.zindex = 2
 
 -- Create a pipe
 local ePipe1Top = scene:createEntity("pipe1_top")
@@ -33,7 +42,9 @@ ePipe1Top.x = 180
 ePipe1Top.y = -100
 ePipe1Top:setColliderSize(52, 320)
 ePipe1Top.props.kills = true
+ePipe1Top.solid = false
 ePipe1Top.props.pipe = "top"
+ePipe1Top.props.pipenumber = 1
 
 ePipe1TopSpr.x = 52
 ePipe1TopSpr.y = 320
@@ -48,9 +59,40 @@ ePipe1Bottom.x = 180
 ePipe1Bottom.y = 360
 ePipe1Bottom:setColliderSize(52, 320)
 ePipe1Bottom.props.kills = true
+ePipe1Bottom.solid = false
 ePipe1Bottom.props.pipe = "bottom"
 
 ePipe1Bottom:addScript("pipe.lua")
+
+-- Create a pipe
+local ePipe2Top = scene:createEntity("pipe2_top")
+local ePipe2TopSpr = ePipe2Top:addSpriteComponent("pipe2_top_sprite", "images/flappy/pipe-green.png")
+ePipe2Top.static = true
+ePipe2Top.x = 349
+ePipe2Top.y = -100
+ePipe2Top:setColliderSize(52, 320)
+ePipe2Top.props.kills = true
+ePipe2Top.solid = false
+ePipe2Top.props.pipe = "top"
+ePipe2Top.props.pipenumber = 2
+
+ePipe2TopSpr.x = 52
+ePipe2TopSpr.y = 320
+ePipe2TopSpr.rotation = 180
+
+ePipe2Top:addScript("pipe.lua")
+
+local ePipe2Bottom = scene:createEntity("pipe2_bottom")
+local ePipe2BottomSpr = ePipe2Bottom:addSpriteComponent("pipe2_bottom_sprite", "images/flappy/pipe-green.png")
+ePipe2Bottom.static = true
+ePipe2Bottom.x = 349
+ePipe2Bottom.y = 360
+ePipe2Bottom:setColliderSize(52, 320)
+ePipe2Bottom.props.kills = true
+ePipe2Bottom.solid = false
+ePipe2Bottom.props.pipe = "bottom"
+
+ePipe2Bottom:addScript("pipe.lua")
 
 
 -- Create the "fruit"
@@ -58,5 +100,44 @@ local eFruit = scene:createEntity("fruit")
 eFruit.x = 180
 eFruit.y = 0
 eFruit.static = true
+eFruit.debug = false
+eFruit.props.fruit = true
 eFruit.props.eaten = false
 eFruit:setColliderSize(40, 512)
+
+-- Create the "fruit"
+local eFruit2 = scene:createEntity("fruit2")
+eFruit2.x = 349
+eFruit2.y = 0
+eFruit2.static = true
+eFruit2.props.fruit = true
+eFruit2.props.eaten = false
+eFruit2:setColliderSize(40, 512)
+
+
+function spark:update()
+    if not eBird.props.dead then
+        local speed = 100 + (eBird.props.score * 5)
+        bgSpr1.x = bgSpr1.x - (speed * spark.time.delta)
+        bgSpr2.x = bgSpr2.x - (speed * spark.time.delta)
+
+        if (bgSpr1.x < -288) then
+            bgSpr1.x = bgSpr2.x + 288
+        end
+
+        if (bgSpr2.x < -288) then
+            bgSpr2.x = bgSpr1.x + 288
+        end
+        
+        floorSpr1.x = floorSpr1.x - (speed * spark.time.delta)
+        floorSpr2.x = floorSpr2.x - (speed * spark.time.delta)
+
+        if (floorSpr1.x < -336) then
+            floorSpr1.x = floorSpr2.x + 336
+        end
+
+        if (floorSpr2.x < -336) then
+            floorSpr2.x = floorSpr1.x + 336
+        end
+    end
+end

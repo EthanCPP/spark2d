@@ -27,6 +27,7 @@ void LuaApi::setup()
     setupTextComponent();
     setupCircleComponent();
     setupRectangleComponent();
+    setupSoundComponent();
     setupKeyboard();
     setupMouse();
     setupUtils();
@@ -152,7 +153,8 @@ void LuaApi::setupEntity()
         "vx", sol::property(&GameEntity::getXVelocity, &GameEntity::setXVelocity),
         "vy", sol::property(&GameEntity::getYVelocity, &GameEntity::setYVelocity),
         "debug", sol::property(&GameEntity::getColliderDebug, &GameEntity::setColliderDebug),
-        "solid", sol::property(&GameEntity::getSolid, &GameEntity::setSolid)
+        "solid", sol::property(&GameEntity::getSolid, &GameEntity::setSolid),
+        "zindex", sol::property(&GameEntity::getZIndex, &GameEntity::setZIndex)
     );
 
 
@@ -250,6 +252,29 @@ void LuaApi::setupEntity()
         return std::dynamic_pointer_cast<RectangleComponent>(entity.getComponent(key));
     };
 
+
+    /*
+    * =========================================
+    * Convert the sound component to a shared pointer, add it to the desired entity
+    * =========================================
+    */
+
+    // -- entity:addSoundComponent(text)
+    lua["Entity"]["addSoundComponent"] = [this](GameEntity& entity, std::string key, std::string filepath)
+    {
+        std::shared_ptr<SoundComponent> soundComponent = std::make_shared<SoundComponent>(key);
+        mSceneManager->getScene(entity.sceneKey)->entityManager->getEntity(entity.key)->addSoundComponent(soundComponent);
+        soundComponent->loadSound(filepath);
+
+        return soundComponent;
+    };
+
+    // -- entity:getSoundComponent(key)
+    lua["Entity"]["getSoundComponent"] = [this](GameEntity& entity, std::string key)
+    {
+        return std::dynamic_pointer_cast<SoundComponent>(entity.getComponent(key));
+    };
+
     lua["Entity"]["addScript"] = [this](GameEntity& entity, std::string path)
     {
         // todo implement this better
@@ -333,6 +358,26 @@ void LuaApi::setupSpriteComponent()
         "rotation", sol::property(&SpriteComponent::getRotation, &SpriteComponent::setRotation)
     );
 
+    lua["SpriteComponent"]["getSize"] = [this](SpriteComponent& component)
+    {
+        return lua.create_table_with(
+            "width", component.getSize().x,
+            "height", component.getSize().y
+        );
+    };
+
+    lua["SpriteComponent"]["getOrigin"] = [this](SpriteComponent& component)
+    {
+        return lua.create_table_with(
+            "x", component.getOrigin().x,
+            "y", component.getOrigin().y
+        );
+    };
+
+    lua["SpriteComponent"]["setOrigin"] = [this](SpriteComponent& component, float x, float y)
+    {
+        component.setOrigin(sf::Vector2f(x, y));
+    };
 }
 
 void LuaApi::setupTextComponent()
@@ -512,6 +557,34 @@ void LuaApi::setupRectangleComponent()
     lua["RectangleComponent"]["setTexture"] = [this](RectangleComponent& component, std::string filepath)
     {
         component.setTexture(filepath);
+    };
+}
+
+void LuaApi::setupSoundComponent()
+{
+    /*
+    * =========================================
+    * Create a new sound component object
+    *
+    * DON'T CREATE COMPONENT THIS WAY. USE (Entity):addSoundComponent(key)
+    * =========================================
+    */
+    lua.new_usertype<SoundComponent>("SoundComponent",
+        sol::meta_function::construct,
+        sol::factories(
+            [this](std::string key) {
+                std::cout << "Please use (entity):addSoundComponent(key, path) instead of SoundComponent.new()!" << std::endl;
+                std::shared_ptr<SoundComponent> soundComponent = std::make_shared<SoundComponent>(key);
+
+                return soundComponent;
+            }
+        ),
+        "volume", sol::property(&SoundComponent::getVolume, &SoundComponent::setVolume)
+    );
+
+    lua["SoundComponent"]["play"] = [this](SoundComponent& component)
+    {
+        component.play();
     };
 }
 

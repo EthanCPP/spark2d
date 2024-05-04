@@ -22,9 +22,17 @@ public:
 	void update(float dt);
 	void render(std::shared_ptr<sf::RenderWindow> window);
 
+	void sortZIndexes();
+
 private:
 	std::map<std::string, std::shared_ptr<GameEntity>> mEntities;
 	ResourceManager* mResourceManager;
 	std::shared_ptr<SparkGlobals> mSparkGlobals;
+
+	std::vector<std::shared_ptr<GameEntity>> mEntitiesSorted; // sorted by zIndex ready for rendering
+
+	static bool zIndexSortFunc(std::shared_ptr<GameEntity> i, std::shared_ptr<GameEntity> j);
+
+	sf::Clock mSortClock;
 };
 

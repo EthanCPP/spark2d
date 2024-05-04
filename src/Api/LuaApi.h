@@ -76,6 +76,7 @@ private:
 	void setupTextComponent();
 	void setupCircleComponent();
 	void setupRectangleComponent();
+	void setupSoundComponent();
 	void setupKeyboard();
 	void setupMouse();
 	void setupUtils();

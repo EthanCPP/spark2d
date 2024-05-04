@@ -19,6 +19,10 @@ public:
     void init(ResourceManager* resourceManager);
     void loadTexture(std::string filepath);
 
+    sf::Vector2i getSize();
+    void setOrigin(sf::Vector2f origin);
+    sf::Vector2f getOrigin();
+
     virtual bool isDrawable() { return true; }
 
     void update(Transform& globalTransform);

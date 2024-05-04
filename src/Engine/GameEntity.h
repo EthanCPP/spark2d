@@ -5,6 +5,7 @@
 #include "../Components/TextComponent.h"
 #include "../Components/CircleComponent.h"
 #include "../Components/RectangleComponent.h"
+#include "../Components/SoundComponent.h"
 #include "../Components/Transform.h"
 #include "ResourceManager.h"
 #include "SparkGlobals.h"
@@ -95,6 +96,7 @@ public:
     void addTextComponent(std::shared_ptr<TextComponent> textComponent);
     void addCircleComponent(std::shared_ptr<CircleComponent> circleComponent);
     void addRectangleComponent(std::shared_ptr<RectangleComponent> rectangleComponent);
+    void addSoundComponent(std::shared_ptr<SoundComponent> soundComponent);
 
     std::shared_ptr<IComponent> getComponent(std::string key);
 
@@ -140,6 +142,10 @@ public:
     sf::Vector2f mVelocity;
     std::vector<std::shared_ptr<GameEntity>> mColliders;
     bool mSolid; // whether a colliding object should debounce
+
+    float zIndex;
+    void setZIndex(float zIndex);
+    float getZIndex();
 private:
     std::map<std::string, std::shared_ptr<IComponent>> mComponents;
 

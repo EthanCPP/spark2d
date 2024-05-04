@@ -22,6 +22,21 @@ void SpriteComponent::loadTexture(std::string filepath)
     //mSprite.setOrigin(mSprite.getTextureRect().width / 2, mSprite.getTextureRect().height / 2);
 }
 
+sf::Vector2i SpriteComponent::getSize()
+{
+    return sf::Vector2i(mSprite.getTextureRect().width, mSprite.getTextureRect().height);
+}
+
+void SpriteComponent::setOrigin(sf::Vector2f origin)
+{
+    mSprite.setOrigin(origin);
+}
+
+sf::Vector2f SpriteComponent::getOrigin()
+{
+    return mSprite.getOrigin();
+}
+
 void SpriteComponent::update(Transform& globalTransform)
 {
     sf::Transform parentTransform;

@@ -74,4 +74,12 @@ void LuaConfigLoader::setupFunctions()
     lua["spark"]["preloadTexture"] = [this](sol::table spark, std::string path) {
         mResourceManager->getTexture(path);
     };
+
+    lua["spark"]["preloadFont"] = [this](sol::table spark, std::string path) {
+        mResourceManager->getFont(path);
+    };
+
+    lua["spark"]["preloadSound"] = [this](sol::table spark, std::string path) {
+        mResourceManager->getSoundBuffer(path);
+    };
 }

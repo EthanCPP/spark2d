@@ -37,6 +37,13 @@ public:
         mLocalTransform.rotation = angle;
     }
 
+    virtual sf::Vector2i getSize() {
+        return sf::Vector2i(0, 0);
+    }
+
+    virtual void setOrigin(sf::Vector2f origin) {}
+    virtual sf::Vector2f getOrigin() { return sf::Vector2f(0.f, 0.f); }
+
 protected:
     Transform mLocalTransform;
 };

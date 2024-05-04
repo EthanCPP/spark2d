@@ -15,6 +15,8 @@ void EntityManager::addEntity(std::string key, std::shared_ptr<GameEntity> entit
 {
     entity->init(mResourceManager, mSparkGlobals);
 	mEntities.insert({ key, entity });
+
+    sortZIndexes();
 }
 
 std::shared_ptr<GameEntity> EntityManager::getEntity(std::string key)
@@ -29,6 +31,14 @@ void EntityManager::destroyEntity(std::string key)
 
 void EntityManager::update(float dt)
 {
+    // Re-sorting zindexes every second.
+    // todo: can we do this better
+    if (mSortClock.getElapsedTime().asSeconds() >= 1)
+    {
+        mSortClock.restart();
+        sortZIndexes();
+    }
+
     for (auto const& entity : mEntities)
     {
         entity.second->mColliders.clear();
@@ -54,10 +64,25 @@ void EntityManager::update(float dt)
     }
 }
 
+void EntityManager::sortZIndexes()
+{
+    mEntitiesSorted.clear();
+
+    for (auto const& entity : mEntities)
+        mEntitiesSorted.emplace_back(entity.second);
+
+    std::sort(mEntitiesSorted.begin(), mEntitiesSorted.end(), &zIndexSortFunc);
+}
+
 void EntityManager::render(std::shared_ptr<sf::RenderWindow> window)
 {
-    for (auto const& entity : mEntities)
+    for (auto const& entity : mEntitiesSorted)
     {
-        entity.second->render(window);
+        entity->render(window);
     }
+}
+
+bool EntityManager::zIndexSortFunc(std::shared_ptr<GameEntity> i, std::shared_ptr<GameEntity> j)
+{
+    return i->zIndex < j->zIndex;
 }

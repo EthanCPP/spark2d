@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Components\SoundComponent.cpp" />
     <ClCompile Include="src\Components\RectangleComponent.cpp" />
     <ClCompile Include="src\Components\CircleComponent.cpp" />
     <ClCompile Include="src\Engine\ResourceManager.cpp" />
@@ -166,6 +167,7 @@
     <ClCompile Include="src\Components\TextComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Components\SoundComponent.h" />
     <ClInclude Include="src\Components\RectangleComponent.h" />
     <ClInclude Include="src\Components\CircleComponent.h" />
     <ClInclude Include="src\Engine\ResourceManager.h" />

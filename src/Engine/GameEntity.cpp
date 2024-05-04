@@ -23,6 +23,7 @@ void GameEntity::init(ResourceManager* resourceManager, std::shared_ptr<SparkGlo
     mColliderDebug.setOutlineColor(sf::Color(255, 0, 0));
     mColliderDebug.setFillColor(sf::Color(0, 0, 0, 0));
     mColliderDebug.setOutlineThickness(2);
+    zIndex = 0;
 }
 
 void GameEntity::addLuaState(std::shared_ptr<LuaApi> luaState)
@@ -58,6 +59,13 @@ void GameEntity::addRectangleComponent(std::shared_ptr<RectangleComponent> recta
     mComponents.insert({ rectangleComponent->key, rectangleComponent });
 }
 
+void GameEntity::addSoundComponent(std::shared_ptr<SoundComponent> soundComponent)
+{
+    // todo: safer way of keying
+    soundComponent->init(mResourceManager);
+    mComponents.insert({ soundComponent->key, soundComponent });
+}
+
 std::shared_ptr<IComponent> GameEntity::getComponent(std::string key)
 {
     return mComponents[key];
@@ -85,7 +93,7 @@ void GameEntity::update(float dt)
                     mVelocity.y > 0)
                 {
                     // Bottom collisions
-                    sf::Vector2f currentPos = transform.position;
+                    sf::Vector2f currentPos = sf::Vector2f(getCollider().left, getCollider().top);
                     sf::Vector2f newPos = sf::Vector2f(currentPos.x, collider->getCollider().top - getCollider().height - 1);
                     sf::Vector2f diff = newPos - currentPos;
                     float distance = sqrt(powf(diff.x, 2) + powf(diff.y, 2));
@@ -93,7 +101,7 @@ void GameEntity::update(float dt)
                     if (distance < 2) // Make sure the distance we are snapping to isn't too great
                     {
                         mVelocity.y = 0;
-                        transform.position.y = collider->getCollider().top - getCollider().height - 1;
+                        transform.position.y = (collider->getCollider().top - getCollider().height - 1) - mCollider.top;
                     }
                 }
                 else if ((getCollider().top < collider->getCollider().top + collider->getCollider().height) &&
@@ -102,7 +110,7 @@ void GameEntity::update(float dt)
                     mVelocity.y < 0)
                 {
                     // Top collisions
-                    sf::Vector2f currentPos = transform.position;
+                    sf::Vector2f currentPos = sf::Vector2f(getCollider().left, getCollider().top);
                     sf::Vector2f newPos = sf::Vector2f(currentPos.x, collider->getCollider().top + collider->getCollider().height + 1);
                     sf::Vector2f diff = newPos - currentPos;
                     float distance = sqrt(powf(diff.x, 2) + powf(diff.y, 2));
@@ -110,7 +118,7 @@ void GameEntity::update(float dt)
                     if (distance < 2)
                     {
                         mVelocity.y = 0;
-                        transform.position.y = collider->getCollider().top + collider->getCollider().height + 1;
+                        transform.position.y = (collider->getCollider().top + collider->getCollider().height + 1) - mCollider.top;
                     }
                 }
                 else if ((getCollider().left < collider->getCollider().left + collider->getCollider().width) &&
@@ -119,7 +127,7 @@ void GameEntity::update(float dt)
                     mVelocity.x < 0)
                 {
                     // Left collisions
-                    sf::Vector2f currentPos = transform.position;
+                    sf::Vector2f currentPos = sf::Vector2f(getCollider().left, getCollider().top);
                     sf::Vector2f newPos = sf::Vector2f(collider->getCollider().left + collider->getCollider().width + 1, currentPos.y);
                     sf::Vector2f diff = newPos - currentPos;
                     float distance = sqrt(powf(diff.x, 2) + powf(diff.y, 2));
@@ -127,7 +135,7 @@ void GameEntity::update(float dt)
                     if (distance < 2)
                     {
                         mVelocity.x = 0;
-                        transform.position.x = collider->getCollider().left + collider->getCollider().width + 1;
+                        transform.position.x = (collider->getCollider().left + collider->getCollider().width + 1) - mCollider.left;
                     }
                 }
                 else if ((getCollider().left + getCollider().width > collider->getCollider().left) &&
@@ -136,7 +144,7 @@ void GameEntity::update(float dt)
                     mVelocity.x > 0)
                 {
                     // Right collisions
-                    sf::Vector2f currentPos = transform.position;
+                    sf::Vector2f currentPos = sf::Vector2f(getCollider().left, getCollider().top);
                     sf::Vector2f newPos = sf::Vector2f(collider->getCollider().left - getCollider().width - 1, currentPos.y);
                     sf::Vector2f diff = newPos - currentPos;
                     float distance = sqrt(powf(diff.x, 2) + powf(diff.y, 2));
@@ -144,7 +152,7 @@ void GameEntity::update(float dt)
                     if (distance < 2)
                     {
                         mVelocity.x = 0;
-                        transform.position.x = collider->getCollider().left - getCollider().width - 1;
+                        transform.position.x = (collider->getCollider().left - getCollider().width - 1) - mCollider.left;
                     }
                 }
             }
@@ -294,6 +302,16 @@ bool GameEntity::checkCollision(std::shared_ptr<GameEntity> entity)
     }
 
     return false;
+}
+
+void GameEntity::setZIndex(float zIndex)
+{
+    this->zIndex = zIndex;
+}
+
+float GameEntity::getZIndex()
+{
+    return zIndex;
 }
 
 GameEntityProperties& GameEntity::getDynamicProps()

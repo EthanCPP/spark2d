@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include <unordered_map>
 #include <string>
@@ -18,8 +19,12 @@ public:
 	std::shared_ptr<sf::Font> getFont(std::string path);
 	void unloadFont(std::string path);
 
+	std::shared_ptr<sf::SoundBuffer> getSoundBuffer(std::string path);
+	void unloadSoundBuffer(std::string path);
+
 private:
 	std::unordered_map<std::string, std::shared_ptr<sf::Texture>> mTextures;
 	std::unordered_map<std::string, std::shared_ptr<sf::Font>> mFonts;
+	std::unordered_map<std::string, std::shared_ptr<sf::SoundBuffer>> mSoundBuffers;
 };
 
