@@ -8,7 +8,7 @@ LuaApi::LuaApi(std::shared_ptr<SceneManager> sceneManager, std::shared_ptr<sf::R
 
     this->inactive = false;
 
-    lua.open_libraries(sol::lib::base, sol::lib::io, sol::lib::math, sol::lib::table, sol::lib::coroutine);
+    lua.open_libraries(sol::lib::base, sol::lib::io, sol::lib::math, sol::lib::table, sol::lib::coroutine, sol::lib::package);
 }
 
 LuaApi::~LuaApi()
