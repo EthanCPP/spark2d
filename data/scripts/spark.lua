@@ -23,12 +23,18 @@ eFloor.zindex = 1
 
 -- Create the bird
 local eBird = scene:createEntity("bird")
-local eBirdSprite = eBird:addSpriteComponent("bird_sprite", "images/flappy/redbird-downflap.png")
+
+local eBirdSprite = eBird:addSpriteComponent("bird_sprite", "images/flappy/flappy.png")
+eBirdSprite:setFrameDimensions(34, 24)
+
+
 eBird.y = 200
 eBird.x = 50
-eBird.props.dead = false
+eBird.props.ready = true
+eBird.props.dead = true
+eBird.static = true
 eBird.props.score = 0
-eBirdSprite:setOrigin(eBirdSprite:getSize().width / 2, eBirdSprite:getSize().height / 2)
+eBirdSprite:setOrigin(17, 14)
 eBird:setColliderSize(18, 10)
 eBird:setColliderOffset(-10, -5)
 eBird:addScript("bird.lua")
@@ -139,5 +145,33 @@ function spark:update()
         if (floorSpr2.x < -336) then
             floorSpr2.x = floorSpr1.x + 336
         end
+    end
+end
+
+function spark:keyreleased(code)
+    if eBird.props.dead and code == spark.keyboard.code.enter then
+        -- reset pipes
+        ePipe1Top.x = 180
+        ePipe1Top.y = -100
+        ePipe1Bottom.x = 180
+        ePipe1Bottom.y = 360
+
+        ePipe2Top.x = 349
+        ePipe2Top.y = -100
+        ePipe2Bottom.x = 349
+        ePipe2Bottom.y = 360
+
+        -- reset fruit
+        eFruit.props.eaten = false
+        eFruit.x = 180
+        eFruit2.props.eaten = false
+        eFruit2.x = 349
+
+        -- reset bird
+        eBird.y = 200
+        eBird.x = 50
+        eBird.static = true
+        eBird.props.score = 0
+        eBird.props.ready = true
     end
 end

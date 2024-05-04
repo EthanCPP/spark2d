@@ -10,6 +10,12 @@
 #include <string>
 #include <memory>
 
+enum SpriteAnimationFunction {
+    Forward = 0,
+    Boomerang = 1,
+    Reverse = 2,
+};
+
 class SpriteComponent : public IComponent
 {
 public:
@@ -18,6 +24,19 @@ public:
 
     void init(ResourceManager* resourceManager);
     void loadTexture(std::string filepath);
+
+    // animations (sprite sheets)
+    void setFrameDimensions(unsigned int width, unsigned int height);
+    void setRow(int row);
+    void setFrame(int frame);
+    void setMinFrame(int minFrame);
+    void setMaxFrame(int maxFrame);
+    void setFrameDuration(float duration);
+    void playAnimation();
+    void pauseAnimation();
+    void setMaxAnimationIterations(int maxIterations);
+    void setAnimationFunction(SpriteAnimationFunction animationFunction);
+
 
     sf::Vector2i getSize();
     void setOrigin(sf::Vector2f origin);
@@ -36,4 +55,18 @@ private:
     sf::Transform mFinalTransform;
 
     ResourceManager* mResourceManager;
+
+    // animations (sprite sheets)
+    sf::Vector2u mFrameDimensions;
+    int mRow, mMinFrame, mMaxFrame, mCurrentFrame;
+    float mFrameDuration;
+    sf::Clock mFrameTimer;
+    bool mAnimationPlaying;
+    int mCurrentIteration, mMaxIterations;
+    SpriteAnimationFunction mAnimationFunction;
+    bool mBoomerangReverse;
+
+    void updateAnimation();
+    void setSpriteRect();
+
 };

@@ -14,7 +14,12 @@ soundPoint.volume = 50
 
 function setRotation()
     if entity.props.dead then
-        sprite.rotation = 90
+        if entity.props.ready then
+            sprite.rotation = 0
+        else
+            sprite.rotation = 90
+        end
+
         return
     end
 
@@ -28,6 +33,7 @@ function setRotation()
         end
 
         sprite.rotation = rotation
+        sprite:setFrame(0)
     end
 end
 
@@ -54,11 +60,16 @@ function spark:update()
 end
 
 function spark:keypressed(code)
-    if not entity.props.dead then
-        if code == spark.keyboard.code.c then
+    if code == spark.keyboard.code.c then
+        if not entity.props.dead then
             -- jump!
-            entity.vy = -420
+            entity.vy = -320
             soundFlap:play()
+            sprite:setFrame(1)
+        elseif entity.props.ready then
+            entity.props.ready = false
+            entity.props.dead = false
+            entity.static = false
         end
     end
 end

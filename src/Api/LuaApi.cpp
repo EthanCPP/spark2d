@@ -378,6 +378,66 @@ void LuaApi::setupSpriteComponent()
     {
         component.setOrigin(sf::Vector2f(x, y));
     };
+
+    /*
+    * ANIMATIONS.
+    */
+
+    lua["SpriteComponent"]["setFrameDimensions"] = [this](SpriteComponent& component, int width, int height)
+    {
+        component.setFrameDimensions(width, height);
+    };
+
+    lua["SpriteComponent"]["setRow"] = [this](SpriteComponent& component, int row)
+    {
+        component.setRow(row);
+    };
+
+    lua["SpriteComponent"]["setFrame"] = [this](SpriteComponent& component, int frame)
+    {
+        component.setFrame(frame);
+    };
+
+    lua["SpriteComponent"]["setMinFrame"] = [this](SpriteComponent& component, int minFrame)
+    {
+        component.setMinFrame(minFrame);
+    };
+
+    lua["SpriteComponent"]["setMaxFrame"] = [this](SpriteComponent& component, int maxFrame)
+    {
+        component.setMaxFrame(maxFrame);
+    };
+
+    lua["SpriteComponent"]["setFrameDuration"] = [this](SpriteComponent& component, float duration)
+    {
+        component.setFrameDuration(duration);
+    };
+
+    lua["SpriteComponent"]["playAnimation"] = [this](SpriteComponent& component)
+    {
+        component.playAnimation();
+    };
+
+    lua["SpriteComponent"]["pauseAnimation"] = [this](SpriteComponent& component)
+    {
+        component.pauseAnimation();
+    };
+
+    lua["SpriteComponent"]["setMaxIterations"] = [this](SpriteComponent& component, int maxIterations)
+    {
+        component.setMaxAnimationIterations(maxIterations);
+    };
+
+    lua["SpriteComponent"]["setAnimationFunction"] = [this](SpriteComponent& component, int animationFunction)
+    {
+        component.setAnimationFunction(static_cast<SpriteAnimationFunction>(animationFunction));
+    };
+
+    lua["spark"]["animation"] = lua.create_table_with(
+        "forward", 0,
+        "boomerang", 1,
+        "reverse", 2
+    );
 }
 
 void LuaApi::setupTextComponent()
