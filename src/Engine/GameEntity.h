@@ -124,6 +124,11 @@ public:
     bool getColliderDebug();
     sf::FloatRect getCollider();
 
+    void setSolid(bool solid);
+    bool getSolid();
+
+    bool checkCollision(std::shared_ptr<GameEntity> entity);
+
     GameEntityProperties& getDynamicProps();
 
     std::string key;
@@ -134,6 +139,7 @@ public:
 
     sf::Vector2f mVelocity;
     std::vector<std::shared_ptr<GameEntity>> mColliders;
+    bool mSolid; // whether a colliding object should debounce
 private:
     std::map<std::string, std::shared_ptr<IComponent>> mComponents;
 

@@ -16,6 +16,7 @@ void GameEntity::init(ResourceManager* resourceManager, std::shared_ptr<SparkGlo
     mSparkGlobals = sparkGlobals;
 
     mStatic = false;
+    mSolid = true;
     mVelocity = sf::Vector2f(0.f, 0.f);
     mCollider = sf::FloatRect(0.f, 0.f, 0.f, 0.f);
     mShowColliderDebug = false;
@@ -67,12 +68,17 @@ void GameEntity::update(float dt)
     if (!mStatic)
     {
         // Gravity (temp)
+        // todo don't apply gravity if there's something in the way
         mVelocity += sf::Vector2f(mSparkGlobals->gravity.x, mSparkGlobals->gravity.y);
 
         if (mColliders.size() > 0)
         {
             for (auto& collider : mColliders)
             {
+                // Don't debounce if the collider is solid
+                if (!collider->mSolid)
+                    continue;
+
                 if ((getCollider().top + getCollider().height > collider->getCollider().top) && // The collision is at the bottom of this object
                     (getCollider().left + getCollider().width - 2 > collider->getCollider().left) && // Make sure this object sits between the X coords of the other object
                     (getCollider().left + 2 < collider->getCollider().left + collider->getCollider().width) && 
@@ -267,6 +273,27 @@ sf::FloatRect GameEntity::getCollider()
         transform.position + mCollider.getPosition(),
         mCollider.getSize()
     );
+}
+
+void GameEntity::setSolid(bool solid)
+{
+    mSolid = solid;
+}
+
+bool GameEntity::getSolid()
+{
+    return mSolid;
+}
+
+bool GameEntity::checkCollision(std::shared_ptr<GameEntity> entity)
+{
+    for (auto& collider : mColliders)
+    {
+        if (collider->key == entity->key)
+            return true;
+    }
+
+    return false;
 }
 
 GameEntityProperties& GameEntity::getDynamicProps()

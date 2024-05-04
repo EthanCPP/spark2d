@@ -1,7 +1,16 @@
 local entity = spark:entity()
 local playerSprite = entity:getSpriteComponent("body")
 
+local scene = spark:getScene("game")
+
+local collider4 = scene:getEntity("collider4")
+
 function spark:update()
+
+    for i, v in pairs(entity:getColliders()) do
+        print(v.props.isFloor)
+    end
+
     if spark.keyboard:down(spark.keyboard.code.a) then
         if (entity.vx > -450) then
             entity:applyVelocity(-1, 0)
@@ -33,15 +42,10 @@ function spark:keypressed(code)
     end
 
     if code == spark.keyboard.code.space then
-        if entity.vy > 0 then
-            -- if falling, apply a lot of velocity
-            entity:applyVelocity(0, -2000)
-        elseif entity.vy < 0 then
-            -- jumping, apply less velocity
-            entity:applyVelocity(0, -500)
-        else
-            -- stationary
-            entity:applyVelocity(0, -1000)
-        end
+        entity.vy = -1000
+    end
+
+    if (code == spark.keyboard.code.i) then
+        collider4.x = collider4.x + 20
     end
 end

@@ -10,8 +10,6 @@ player:setColliderSize(32, 32)
 player.debug = true
 -- player.static = true -- do not apply gravity
 
--- Attach the player script
-player:addScript("player.lua")
 
 -- Add the sprite component to our "bob" entity
 local playerSprite = player:addSpriteComponent("body", "images/bob.png")
@@ -34,6 +32,7 @@ collider1.x = 2
 collider1.y = 0
 collider1.static = true
 collider1.debug = true
+collider1.props.isFloor = true
 collider1:setColliderSize(50, 1080)
 
 local collider2 = scene:createEntity("collider2")
@@ -41,6 +40,7 @@ collider2.x = 1900
 collider2.y = 0
 collider2.static = true
 collider2.debug = true
+collider2.props.isFloor = true
 collider2:setColliderSize(50, 1080)
 
 local collider3 = scene:createEntity("collider3")
@@ -48,6 +48,7 @@ collider3.x = 3
 collider3.y = 3
 collider3.static = true
 collider3.debug = true
+collider3.props.isFloor = true
 collider3:setColliderSize(1920, 30)
 
 local collider4 = scene:createEntity("collider4")
@@ -55,8 +56,12 @@ collider4.x = 540
 collider4.y = 320
 collider4.static = true
 collider4.debug = true
+collider4.solid = false
+collider4.props.isFloor = false
 collider4:setColliderSize(100, 150)
 
+-- Attach the player script
+player:addScript("player.lua")
 
 -- Finally start the scene
 scene:start()

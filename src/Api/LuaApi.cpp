@@ -151,7 +151,8 @@ void LuaApi::setupEntity()
         "static", sol::property(&GameEntity::getStatic, &GameEntity::setStatic),
         "vx", sol::property(&GameEntity::getXVelocity, &GameEntity::setXVelocity),
         "vy", sol::property(&GameEntity::getYVelocity, &GameEntity::setYVelocity),
-        "debug", sol::property(&GameEntity::getColliderDebug, &GameEntity::setColliderDebug)
+        "debug", sol::property(&GameEntity::getColliderDebug, &GameEntity::setColliderDebug),
+        "solid", sol::property(&GameEntity::getSolid, &GameEntity::setSolid)
     );
 
 
@@ -283,6 +284,28 @@ void LuaApi::setupEntity()
     lua["Entity"]["setColliderOffset"] = [this](GameEntity& entity, float x, float y)
     {
         entity.setColliderOffset(x, y);
+    };
+
+    lua["Entity"]["checkCollision"] = [this](GameEntity& entity, GameEntity& otherEntity)
+    {
+        return entity.checkCollision(std::make_shared<GameEntity>(otherEntity));
+    };
+
+    lua["Entity"]["checkCollisionKey"] = [this](GameEntity& entity, std::string otherEntityKey)
+    {
+        return entity.checkCollision(mSceneManager->getCurrentScene()->entityManager->getEntity(otherEntityKey));
+    };
+
+    lua["Entity"]["getColliders"] = [this](GameEntity& entity)
+    {
+        sol::table table = lua.create_table();
+
+        for (auto& collider : entity.mColliders)
+        {
+            table[collider->key] = collider;
+        }
+
+        return table;
     };
 }
 
