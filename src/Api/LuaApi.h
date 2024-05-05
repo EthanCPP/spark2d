@@ -81,6 +81,7 @@ private:
 	void setupMouse();
 	void setupUtils();
 	void setupTime();
+	void setupGuiEntity();
 
 
 	// Test functions

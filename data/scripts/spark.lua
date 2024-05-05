@@ -120,10 +120,28 @@ eFruit2.props.fruit = true
 eFruit2.props.eaten = false
 eFruit2:setColliderSize(40, 512)
 
+-- GUI
+local scoreGui = scene:createGuiEntity("score")
+scoreGui.x = 144
+scoreGui.y = 50
+
+local scoreHundreds = scoreGui:addSpriteComponent("hundreds", "images/flappy/score_spritesheet.png")
+scoreHundreds:setOrigin(12, 0)
+scoreHundreds:setFrameDimensions(24, 36)
+scoreHundreds.x = -1000 -- out of sight
+
+local scoreTens = scoreGui:addSpriteComponent("tens", "images/flappy/score_spritesheet.png")
+scoreTens:setOrigin(12, 0)
+scoreTens:setFrameDimensions(24, 36)
+scoreTens.x = -1000 -- out of sight
+
+local scoreDigits = scoreGui:addSpriteComponent("digits", "images/flappy/score_spritesheet.png")
+scoreDigits:setOrigin(12, 0)
+scoreDigits:setFrameDimensions(24, 36)
 
 function spark:update()
     if not eBird.props.dead then
-        local speed = 100 + (eBird.props.score * 5)
+        local speed = ePipe1Top.props.speed
         bgSpr1.x = bgSpr1.x - (speed * spark.time.delta)
         bgSpr2.x = bgSpr2.x - (speed * spark.time.delta)
 
@@ -145,6 +163,31 @@ function spark:update()
         if (floorSpr2.x < -336) then
             floorSpr2.x = floorSpr1.x + 336
         end
+    end
+
+    local score = eBird.props.score
+
+    if score - 100 >= 0 then
+        scoreHundreds.x = -24
+        scoreTens.x = 0
+        scoreDigits.x = 24
+
+        scoreHundreds:setFrame(math.floor(score / 100))
+        scoreTens:setFrame(math.floor((score % 100) / 10))
+        scoreDigits:setFrame(score % 10)
+    elseif score - 10 >= 0 then
+        scoreHundreds.x = -1000
+        scoreTens.x = -12
+        scoreDigits.x = 12
+
+        scoreTens:setFrame(math.floor(score / 10))
+        scoreDigits:setFrame(math.floor(score % 10))
+    else
+        scoreHundreds.x = -1000
+        scoreTens.x = -1000
+        scoreDigits.x = 0
+
+        scoreDigits:setFrame(math.floor(score))
     end
 end
 

@@ -1,7 +1,7 @@
 local scene = spark:getScene("game")
 local entity = spark:entity()
 
-local distance = 540
+local distance = 500
 
 local bird = scene:getEntity("bird")
 local fruit = scene:getEntity("fruit")
@@ -9,15 +9,9 @@ local fruit2 = scene:getEntity("fruit2")
 
 function set()
     if entity.props.pipe == "top" then
-        if bird.props.score >= 5 then
-            distance = 500
-        end
+        distance = 500 - (bird.props.score * 2)
 
-        if bird.props.score >= 10 then
-            distance = 480
-        end
-
-        if bird.props.score >= 20 then
+        if distance < 440 then
             distance = 440
         end
 
@@ -40,7 +34,14 @@ set()
 
 function spark:update()
     if not bird.props.dead then
-        local speed = 100 + (bird.props.score * 5)
+        local speed = 100 + (bird.props.score)
+
+        if speed >= 250 then
+            speed = 250
+        end
+
+        entity.props.speed = speed
+
         entity.x = entity.x - (speed * spark.time.delta)
         
         if entity.props.pipenumber == 1 then

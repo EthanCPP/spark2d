@@ -1,6 +1,7 @@
 #pragma once
 #include "ResourceManager.h"
 #include "EntityManager.h"
+#include "GuiManager.h"
 #include "SparkGlobals.h"
 
 #include <SFML/Graphics.hpp>
@@ -20,6 +21,7 @@ public:
 	void render(std::shared_ptr<sf::RenderWindow> window);
 
 	std::shared_ptr<EntityManager> entityManager;
+	std::shared_ptr<GuiManager> guiManager;
 
 	std::string key;
 

@@ -53,7 +53,6 @@ function spark:update()
                 collider.props.eaten = true
                 entity.props.score = entity.props.score + 1
                 soundPoint:play()
-                print("points: " .. entity.props.score)
             end
         end
     end
