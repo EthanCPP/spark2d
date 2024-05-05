@@ -33,7 +33,7 @@ public:
 
     std::shared_ptr<IComponent> getComponent(std::string key);
 
-    void update(float dt);
+    void update(float dt, float mouseX, float mouseY);
     void render(std::shared_ptr<sf::RenderWindow> window);
 
     float getX();
@@ -48,6 +48,14 @@ public:
     void setZIndex(float zIndex);
     float getZIndex();
 
+    void setBoundarySize(float width, float height);
+    void setBoundaryOffset(float x, float y);
+    void setBoundaryDebug(bool debug);
+    bool getBoundaryDebug();
+    sf::FloatRect getBoundary();
+
+    bool getMouseOver();
+
     std::string key;
     std::string sceneKey;
 
@@ -57,5 +65,11 @@ private:
     Transform transform;
     ResourceManager* mResourceManager;
     std::shared_ptr<SparkGlobals> mSparkGlobals;
+
+    bool mMouseOver;
+
+    sf::RectangleShape mBoundaryDebug;
+    bool mShowBoundaryDebug;
+    sf::FloatRect mBoundary;
 };
 

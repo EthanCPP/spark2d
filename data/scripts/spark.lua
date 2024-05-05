@@ -124,6 +124,7 @@ eFruit2:setColliderSize(40, 512)
 local scoreGui = scene:createGuiEntity("score")
 scoreGui.x = 144
 scoreGui.y = 50
+scoreGui:setBoundarySize(30, 30)
 
 local scoreHundreds = scoreGui:addSpriteComponent("hundreds", "images/flappy/score_spritesheet.png")
 scoreHundreds:setOrigin(12, 0)
@@ -138,6 +139,12 @@ scoreTens.x = -1000 -- out of sight
 local scoreDigits = scoreGui:addSpriteComponent("digits", "images/flappy/score_spritesheet.png")
 scoreDigits:setOrigin(12, 0)
 scoreDigits:setFrameDimensions(24, 36)
+
+function spark:mouseup(button)
+    if button == spark.mouse.button.left and scoreGui.mouseover then
+        print("click")
+    end
+end
 
 function spark:update()
     if not eBird.props.dead then

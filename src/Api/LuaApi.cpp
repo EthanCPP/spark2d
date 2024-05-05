@@ -738,6 +738,9 @@ void LuaApi::mouseMoved(float x, float y)
 
     lua["spark"]["mouse"]["x"] = mMouseX;
     lua["spark"]["mouse"]["y"] = mMouseY;
+
+    mSceneManager->getCurrentScene()->guiManager->mouseX = mMouseX;
+    mSceneManager->getCurrentScene()->guiManager->mouseY = mMouseY;
 }
 
 void LuaApi::setupKeyboard()
@@ -1026,7 +1029,9 @@ void LuaApi::setupGuiEntity()
         "x", sol::property(&GuiEntity::getX, &GuiEntity::setX),
         "y", sol::property(&GuiEntity::getY, &GuiEntity::setY),
         "rotation", sol::property(&GuiEntity::getRotation, &GuiEntity::setRotation),
-        "zindex", sol::property(&GuiEntity::getZIndex, &GuiEntity::setZIndex)
+        "zindex", sol::property(&GuiEntity::getZIndex, &GuiEntity::setZIndex),
+        "debug", sol::property(&GuiEntity::getBoundaryDebug, &GuiEntity::setBoundaryDebug),
+        "mouseover", sol::property(&GuiEntity::getMouseOver)
     );
 
 
@@ -1142,8 +1147,18 @@ void LuaApi::setupGuiEntity()
     };
 
     // -- entity:getSoundComponent(key)
-    lua["Entity"]["getSoundComponent"] = [this](GameEntity& entity, std::string key)
+    lua["GuiEntity"]["getSoundComponent"] = [this](GuiEntity& entity, std::string key)
     {
         return std::dynamic_pointer_cast<SoundComponent>(entity.getComponent(key));
+    };
+
+    lua["GuiEntity"]["setBoundarySize"] = [this](GuiEntity& entity, float width, float height)
+    {
+        entity.setBoundarySize(width, height);
+    };
+
+    lua["GuiEntity"]["setBoundaryOffset"] = [this](GuiEntity& entity, float x, float y)
+    {
+        entity.setBoundaryOffset(x, y);
     };
 }

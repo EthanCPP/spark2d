@@ -12,7 +12,11 @@ void GuiEntity::init(ResourceManager* resourceManager, std::shared_ptr<SparkGlob
 {
     mResourceManager = resourceManager;
     mSparkGlobals = sparkGlobals;
-
+    mBoundary = sf::FloatRect(0.f, 0.f, 0.f, 0.f);
+    mShowBoundaryDebug = false;
+    mBoundaryDebug.setOutlineColor(sf::Color(255, 0, 0));
+    mBoundaryDebug.setFillColor(sf::Color(0, 0, 0, 0));
+    mBoundaryDebug.setOutlineThickness(2);
     zIndex = 0;
 }
 
@@ -56,12 +60,24 @@ std::shared_ptr<IComponent> GuiEntity::getComponent(std::string key)
     return mComponents[key];
 }
 
-void GuiEntity::update(float dt)
+void GuiEntity::update(float dt, float mouseX, float mouseY)
 {
     for (auto const& component : mComponents)
     {
         component.second->update(transform);
     }
+
+    if (mShowBoundaryDebug)
+    {
+        mBoundaryDebug.setPosition(transform.position + mBoundary.getPosition());
+        mBoundaryDebug.setSize(mBoundary.getSize());
+    }
+
+    sf::FloatRect boundary = getBoundary();
+    mMouseOver = mouseX >= boundary.left
+        && mouseX <= boundary.left + boundary.width
+        && mouseY >= boundary.top
+        && mouseY <= boundary.top + boundary.height;
 }
 
 void GuiEntity::render(std::shared_ptr<sf::RenderWindow> window)
@@ -71,6 +87,11 @@ void GuiEntity::render(std::shared_ptr<sf::RenderWindow> window)
         if (component.second->isDrawable()) {
             component.second->render(window);
         }
+    }
+
+    if (mShowBoundaryDebug)
+    {
+        window->draw(mBoundaryDebug);
     }
 }
 
@@ -112,4 +133,37 @@ void GuiEntity::setZIndex(float zIndex)
 float GuiEntity::getZIndex()
 {
     return zIndex;
+}
+
+bool GuiEntity::getMouseOver()
+{
+    return mMouseOver;
+}
+
+void GuiEntity::setBoundarySize(float width, float height)
+{
+    mBoundary = sf::FloatRect(mBoundary.left, mBoundary.top, width, height);
+}
+
+void GuiEntity::setBoundaryOffset(float x, float y)
+{
+    mBoundary = sf::FloatRect(x, y, mBoundary.width, mBoundary.height);
+}
+
+void GuiEntity::setBoundaryDebug(bool debug)
+{
+    mShowBoundaryDebug = debug;
+}
+
+bool GuiEntity::getBoundaryDebug()
+{
+    return mShowBoundaryDebug;
+}
+
+sf::FloatRect GuiEntity::getBoundary()
+{
+    return sf::FloatRect(
+        transform.position + mBoundary.getPosition(),
+        mBoundary.getSize()
+    );
 }

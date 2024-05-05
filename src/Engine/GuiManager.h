@@ -24,6 +24,8 @@ public:
 
 	void sortZIndexes();
 
+	float mouseX, mouseY;
+
 private:
 	std::map<std::string, std::shared_ptr<GuiEntity>> mEntities;
 	ResourceManager* mResourceManager;

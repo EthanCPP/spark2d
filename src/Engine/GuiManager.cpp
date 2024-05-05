@@ -42,7 +42,7 @@ void GuiManager::update(float dt)
 
     for (auto const& entity : mEntities)
     {
-        entity.second->update(dt);
+        entity.second->update(dt, mouseX, mouseY);
     }
 }
 
