@@ -151,6 +151,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Api\Core\LuaTime.cpp" />
+    <ClCompile Include="src\Api\Core\LuaUtils.cpp" />
+    <ClCompile Include="src\Api\Core\LuaMouse.cpp" />
+    <ClCompile Include="src\Api\Core\LuaKeyboard.cpp" />
+    <ClCompile Include="src\Api\Component\LuaSoundComponent.cpp" />
+    <ClCompile Include="src\Api\Component\LuaRectangleComponent.cpp" />
+    <ClCompile Include="src\Api\Component\LuaCircleComponent.cpp" />
+    <ClCompile Include="src\Api\Component\LuaTextComponent.cpp" />
+    <ClCompile Include="src\Api\Component\LuaSpriteComponent.cpp" />
+    <ClCompile Include="src\Api\Entity\LuaEntity.cpp" />
+    <ClCompile Include="src\Api\Scene\LuaScene.cpp" />
     <ClCompile Include="src\Engine\GuiEntity.cpp" />
     <ClCompile Include="src\Engine\GuiManager.cpp" />
     <ClCompile Include="src\Components\SoundComponent.cpp" />
@@ -169,6 +180,17 @@
     <ClCompile Include="src\Components\TextComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Api\Core\LuaTime.h" />
+    <ClInclude Include="src\Api\Core\LuaUtils.h" />
+    <ClInclude Include="src\Api\Core\LuaMouse.h" />
+    <ClInclude Include="src\Api\Core\LuaKeyboard.h" />
+    <ClInclude Include="src\Api\Component\LuaSoundComponent.h" />
+    <ClInclude Include="src\Api\Component\LuaRectangleComponent.h" />
+    <ClInclude Include="src\Api\Component\LuaCircleComponent.h" />
+    <ClInclude Include="src\Api\Component\LuaTextComponent.h" />
+    <ClInclude Include="src\Api\Component\LuaSpriteComponent.h" />
+    <ClInclude Include="src\Api\Entity\LuaEntity.h" />
+    <ClInclude Include="src\Api\Scene\LuaScene.h" />
     <ClInclude Include="src\Engine\GuiEntity.h" />
     <ClInclude Include="src\Engine\GuiManager.h" />
     <ClInclude Include="src\Components\SoundComponent.h" />

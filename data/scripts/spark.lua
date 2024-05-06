@@ -27,6 +27,12 @@ local eBird = scene:createEntity("bird")
 local eBirdSprite = eBird:addSpriteComponent("bird_sprite", "images/flappy/flappy.png")
 eBirdSprite:setFrameDimensions(34, 24)
 
+local c = coroutine.wrap(function()
+    spark.time:wait(c, 3)
+    print("YA")
+end)
+c()
+
 
 eBird.y = 200
 eBird.x = 50
