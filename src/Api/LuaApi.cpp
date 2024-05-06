@@ -10,6 +10,27 @@ LuaApi::LuaApi(std::shared_ptr<SceneManager> sceneManager, std::shared_ptr<sf::R
 
     lua.open_libraries(sol::lib::base, sol::lib::io, sol::lib::math, sol::lib::table, sol::lib::coroutine, sol::lib::package);
 
+    // set package.path
+    const std::string package_path = lua["package"]["path"];
+    const std::string current_path = std::string(std::filesystem::current_path().u8string());
+    const std::string spark_search_paths[2] = {
+        "/data/scripts/?/?.lua",
+        "/data/scripts/?.lua"
+    };
+
+    if (globals->isDebug)
+    {
+        lua["package"]["path"] = package_path + ";" +
+            current_path + "/x64/Debug" + spark_search_paths[0] + ";" +
+            current_path + "/x64/Debug" + spark_search_paths[1];
+    }
+    else
+    {
+        lua["package"]["path"] = package_path + ";" +
+            current_path + spark_search_paths[0] + ";" +
+            current_path + spark_search_paths[1];
+    }
+
     mLuaScene = new LuaScene(mSceneManager, mWindow, mGlobals);
     mLuaEntity = new LuaEntity(mSceneManager, mWindow, mGlobals);
     mLuaGuiEntity = new LuaGuiEntity(mSceneManager, mWindow, mGlobals);
