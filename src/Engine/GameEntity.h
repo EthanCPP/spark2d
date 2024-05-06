@@ -24,6 +24,7 @@
 // Forward declaration of LuaApi due to mutual inclusion.
 class LuaApi;
 
+// TODO move this elseware
 struct GameEntityPropItem
 {
     sol::type type;

@@ -1,5 +1,6 @@
 -- Create the scene
 local scene = Scene.new("game")
+
 scene:start()
 
 -- Create the background
@@ -26,6 +27,7 @@ local eBird = scene:createEntity("bird")
 
 local eBirdSprite = eBird:addSpriteComponent("bird_sprite", "images/flappy/flappy.png")
 eBirdSprite:setFrameDimensions(34, 24)
+
 
 
 eBird.y = 200
