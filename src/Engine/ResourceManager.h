@@ -1,4 +1,6 @@
 #pragma once
+#include "SparkGlobals.h"
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
@@ -10,7 +12,7 @@
 class ResourceManager
 {
 public:
-	ResourceManager();
+	ResourceManager(std::shared_ptr<SparkGlobals> globals);
 	~ResourceManager();
 
 	std::shared_ptr<sf::Texture> getTexture(std::string path);
@@ -26,5 +28,7 @@ private:
 	std::unordered_map<std::string, std::shared_ptr<sf::Texture>> mTextures;
 	std::unordered_map<std::string, std::shared_ptr<sf::Font>> mFonts;
 	std::unordered_map<std::string, std::shared_ptr<sf::SoundBuffer>> mSoundBuffers;
+
+	std::shared_ptr<SparkGlobals> mGlobals;
 };
 

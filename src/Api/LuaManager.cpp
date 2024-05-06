@@ -16,6 +16,11 @@ bool LuaManager::addLuaState(std::string file)
 	std::shared_ptr<LuaApi> luaState = std::make_shared<LuaApi>(mSceneManager, mWindow, mGlobals);
 	luaState->setup();
 
+	if (mGlobals->isDebug)
+	{
+		file = "x64/Debug/" + file;
+	}
+
 	if (!luaState->init(file))
 	{
 		std::cout << "Error loading file " << file << std::endl;
@@ -31,6 +36,11 @@ bool LuaManager::addLuaState(std::string file, std::shared_ptr<GameEntity> entit
 {
 	std::shared_ptr<LuaApi> luaState = std::make_shared<LuaApi>(mSceneManager, mWindow, mGlobals);
 	luaState->setup(entity);
+
+	if (mGlobals->isDebug)
+	{
+		file = "x64/Debug/" + file;
+	}
 
 	if (!luaState->init(file))
 	{

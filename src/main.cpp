@@ -9,11 +9,20 @@
 #include <memory>
 #include "Engine/SparkGlobals.h"
 
+#ifndef NDEBUG
+#include <Windows.h>
+#endif
+
 int main()
 {
     std::shared_ptr<SparkGlobals> sparkGlobals = std::make_shared<SparkGlobals>();
 
-    ResourceManager resourceManager;
+#ifndef NDEBUG
+    sparkGlobals->isDebug = WIN32::IsDebuggerPresent();
+#endif
+
+
+    ResourceManager resourceManager(sparkGlobals);
 
     LuaConfigLoader luaConfigLoader(sparkGlobals, &resourceManager);
     luaConfigLoader.setup();

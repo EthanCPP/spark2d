@@ -23,6 +23,11 @@ void LuaConfigLoader::setup()
 
 bool LuaConfigLoader::init(std::string script)
 {
+    if (mGlobals->isDebug)
+    {
+        script = "x64/Debug/" + script;
+    }
+
     try
     {
         lua.safe_script_file(script);

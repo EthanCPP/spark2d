@@ -5,6 +5,11 @@
 struct SparkGlobals
 {
     /*
+    DEVELOPMENT
+    */
+    bool isDebug = false;
+
+    /*
     WINDOW
     */
     float windowWidth = 640;
