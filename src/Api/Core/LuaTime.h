@@ -36,6 +36,7 @@ private:
 	std::shared_ptr<SparkGlobals> mGlobals;
 
 	// Coroutines
+	std::shared_ptr<sol::state> mState;
 	sol::function mCoroutineWrap;
 	std::vector<LuaApiWaiter> mCoroutineWaiters;
 };

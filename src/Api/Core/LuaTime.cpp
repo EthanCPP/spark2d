@@ -15,7 +15,7 @@ LuaTime::~LuaTime()
 
 void LuaTime::setup(sol::state& lua)
 {
-    lua["spark"]["time"] = lua.create_table_with(
+        lua["spark"]["time"] = lua.create_table_with(
         "delta", 0.01f
     );
 

@@ -1,5 +1,6 @@
 -- Create the scene
 local scene = Scene.new("game")
+
 scene:start()
 
 -- Create the background
@@ -27,11 +28,6 @@ local eBird = scene:createEntity("bird")
 local eBirdSprite = eBird:addSpriteComponent("bird_sprite", "images/flappy/flappy.png")
 eBirdSprite:setFrameDimensions(34, 24)
 
--- local c = coroutine.wrap(function()
---     spark.time:wait(c, 3)
---     print("YA")
--- end)
--- c()
 
 
 eBird.y = 200

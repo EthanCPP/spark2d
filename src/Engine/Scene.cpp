@@ -40,3 +40,8 @@ void Scene::render(std::shared_ptr<sf::RenderWindow> window)
 	entityManager->render(window);
 	guiManager->render(window);
 }
+
+SceneProperties& Scene::getDynamicProps()
+{
+	return mDynamicProps;
+}

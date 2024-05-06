@@ -15,6 +15,11 @@ LuaScene::~LuaScene()
 
 void LuaScene::setup(sol::state& lua)
 {
+    lua.new_usertype<SceneProperties>("SceneProperties",
+        sol::meta_function::new_index, &SceneProperties::setPropertyLua,
+        sol::meta_function::index, &SceneProperties::getPropertyLua
+    );
+
     /*
     * =========================================
     * Create a new scene object
@@ -31,7 +36,8 @@ void LuaScene::setup(sol::state& lua)
 
                 return scene;
             }
-        )
+        ),
+        "props", sol::property(&Scene::getDynamicProps)
     );
 
     /*
