@@ -4,6 +4,7 @@
 
 #include "Scene/LuaScene.h"
 #include "Entity/LuaEntity.h"
+#include "Entity/LuaGuiEntity.h"
 #include "Component/LuaSpriteComponent.h"
 #include "Component/LuaTextComponent.h"
 #include "Component/LuaCircleComponent.h"
@@ -12,6 +13,7 @@
 #include "Core/LuaKeyboard.h"
 #include "Core/LuaMouse.h"
 #include "Core/LuaUtils.h"
+#include "Core/LuaTime.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -22,15 +24,6 @@
 
 #define SOL_ALL_SAFETIES_ON 1
 #include <sol/sol.hpp>
-
-
-struct LuaApiWaiter
-{
-	sol::function coroutine;
-	float seconds;
-	sf::Clock clock;
-	bool complete = false;
-};
 
 class LuaApi
 {
@@ -71,22 +64,9 @@ private:
 
 	float mDt;
 private:
-	// Lua functions that call into C++
-	void setupScene();
-	void setupEntity();
-	void setupSpriteComponent();
-	void setupTextComponent();
-	void setupCircleComponent();
-	void setupRectangleComponent();
-	void setupSoundComponent();
-	void setupKeyboard();
-	void setupMouse();
-	void setupUtils();
-	void setupTime();
-	void setupGuiEntity();
-
 	LuaScene* mLuaScene;
 	LuaEntity* mLuaEntity;
+	LuaGuiEntity* mLuaGuiEntity;
 	LuaSpriteComponent* mLuaSpriteComponent;
 	LuaTextComponent* mLuaTextComponent;
 	LuaCircleComponent* mLuaCircleComponent;
@@ -95,18 +75,9 @@ private:
 	LuaKeyboard* mLuaKeyboard;
 	LuaMouse* mLuaMouse;
 	LuaUtils* mLuaUtils;
+	LuaTime* mLuaTime;
 
-
-	// Test functions
-	void setupSandbox();
-	std::shared_ptr<GameEntity> p;
-
-	// Properties
 
 	std::shared_ptr<sf::RenderWindow> mWindow;
-
-	// Coroutines
-	sol::function mCoroutineWrap;
-	std::vector<LuaApiWaiter> mCoroutineWaiters;
 };
 

@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Api\Entity\LuaGuiEntity.cpp" />
     <ClCompile Include="src\Api\Core\LuaTime.cpp" />
     <ClCompile Include="src\Api\Core\LuaUtils.cpp" />
     <ClCompile Include="src\Api\Core\LuaMouse.cpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="src\Components\TextComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Api\Entity\LuaGuiEntity.h" />
     <ClInclude Include="src\Api\Core\LuaTime.h" />
     <ClInclude Include="src\Api\Core\LuaUtils.h" />
     <ClInclude Include="src\Api\Core\LuaMouse.h" />

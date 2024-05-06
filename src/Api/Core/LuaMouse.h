@@ -19,6 +19,10 @@ public:
 	~LuaMouse();
 
 	void setup(sol::state& lua);
+	void mouseDown(sol::state& lua, sf::Mouse::Button button);
+	void mouseUp(sol::state& lua, sf::Mouse::Button button);
+	void mouseWheelMoved(sol::state& lua, int direction);
+	void mouseMoved(sol::state& lua, float x, float y);
 
 private:
 	std::shared_ptr<SceneManager> mSceneManager;

@@ -162,3 +162,13 @@ void LuaKeyboard::setup(sol::state& lua)
         return (std::find(keysDown.begin(), keysDown.end(), code) != keysDown.end());
     };
 }
+
+void LuaKeyboard::keyDown(sol::state& lua, sf::Keyboard::Scancode code)
+{
+    lua["spark"]["keypressed"](sol::nil, code);
+}
+
+void LuaKeyboard::keyUp(sol::state&lua, sf::Keyboard::Scancode code)
+{
+    lua["spark"]["keyreleased"](sol::nil, code);
+}

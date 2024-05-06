@@ -12,17 +12,15 @@
 #define SOL_ALL_SAFETIES_ON 1
 #include <sol/sol.hpp>
 
-class LuaKeyboard
+
+class LuaGuiEntity
 {
 public:
-	LuaKeyboard(std::shared_ptr<SceneManager> sceneManager, std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<SparkGlobals> globals);
-	~LuaKeyboard();
+	LuaGuiEntity(std::shared_ptr<SceneManager> sceneManager, std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<SparkGlobals> globals);
+	~LuaGuiEntity();
 
 	void setup(sol::state& lua);
-	void keyDown(sol::state& lua, sf::Keyboard::Scancode code);
-	void keyUp(sol::state& lua, sf::Keyboard::Scancode code);
 
-	std::vector<sf::Keyboard::Scancode> keysDown;
 private:
 	std::shared_ptr<SceneManager> mSceneManager;
 	std::shared_ptr<sf::RenderWindow> mWindow;

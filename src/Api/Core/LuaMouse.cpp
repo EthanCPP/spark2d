@@ -47,3 +47,29 @@ void LuaMouse::setup(sol::state& lua)
         "down", -1
     );
 }
+
+void LuaMouse::mouseDown(sol::state& lua, sf::Mouse::Button button)
+{
+    lua["spark"]["mousedown"](sol::nil, button);
+}
+
+void LuaMouse::mouseUp(sol::state& lua, sf::Mouse::Button button)
+{
+    lua["spark"]["mouseup"](sol::nil, button);
+}
+
+void LuaMouse::mouseWheelMoved(sol::state& lua, int direction)
+{
+    lua["spark"]["mousewheelmoved"](sol::nil, direction);
+}
+
+void LuaMouse::mouseMoved(sol::state& lua, float x, float y)
+{
+    lua["spark"]["mousemoved"](sol::nil, x, y);
+
+    lua["spark"]["mouse"]["x"] = x;
+    lua["spark"]["mouse"]["y"] = y;
+
+    mSceneManager->getCurrentScene()->guiManager->mouseX = x;
+    mSceneManager->getCurrentScene()->guiManager->mouseY = y;
+}
