@@ -48,4 +48,29 @@ void LuaUtils::setup(sol::state& lua)
     lua["spark"]["setGravity"] = [this](sol::table spark, float x, float y) {
         mGlobals->gravity = sf::Vector2f(x, y);
     };
+
+    /*
+    * =========================================
+    * Music
+    * =========================================
+    */
+    lua["spark"]["music"] = lua.create_table();
+    lua["spark"]["music"]["load"] = [this](sol::table spark, std::string key, std::string file)
+    {
+        mSceneManager->addMusic(key, file);
+    };
+
+    lua["spark"]["music"]["play"] = [this](sol::table spark, std::string key)
+    {
+        mSceneManager->playMusic(key);
+    };
+
+    lua["spark"]["music"]["pause"] = [this](sol::table spark, std::string key)
+    {
+        mSceneManager->pauseMusic(key);
+    };
+    lua["spark"]["music"]["stop"] = [this](sol::table spark, std::string key)
+    {
+        mSceneManager->stopMusic(key);
+    };
 }

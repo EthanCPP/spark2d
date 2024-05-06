@@ -54,3 +54,36 @@ void SceneManager::render(std::shared_ptr<sf::RenderWindow> window)
 		getCurrentScene()->render(window);
 	}
 }
+
+void SceneManager::addMusic(std::string key, std::string file)
+{
+	if (mSparkGlobals->isDebug)
+		file = "x64/Debug/data/" + file;
+	else
+		file = "data/" + file;
+
+	std::shared_ptr<sf::Music> music = std::make_shared<sf::Music>();
+
+	if (!music->openFromFile(file))
+	{
+		std::cout << "Unable to load music from file " << file << std::endl;
+		return;
+	}
+
+	mMusic[key] = music;
+}
+
+void SceneManager::playMusic(std::string key)
+{
+	mMusic[key]->play();
+}
+
+void SceneManager::pauseMusic(std::string key)
+{
+	mMusic[key]->pause();
+}
+
+void SceneManager::stopMusic(std::string key)
+{
+	mMusic[key]->stop();
+}
